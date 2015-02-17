@@ -1,0 +1,4 @@
+all:
+	g++ main.cpp super_ellipse.cpp viewer.cpp controller.cpp -o model -lGL -lGLU -lglut -std=gnu++11
+clean:
+	rm *.o model

@@ -1,0 +1,5 @@
+all:
+	g++ main.cpp cuboid.cpp controller.cpp viewer.cpp -o cuboid -framework GLUT -framework OpenGL
+clean:
+	rm *.o super_ellipse
+	rm *.o cuboid
