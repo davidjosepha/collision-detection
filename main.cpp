@@ -44,8 +44,10 @@ int main(int argc, char * argv[]) {
   gsl_vector_set(impact, 1, 1.0);
   gsl_vector_set(impact, 2, 0.0);
 
+  //gsl_vector_set(impact_velocity, 0, -0.001);
+  //gsl_vector_set(impact_velocity, 1, -0.001);
   gsl_vector_set(impact_velocity, 0, -0.001);
-  gsl_vector_set(impact_velocity, 1, -0.001);
+  gsl_vector_set(impact_velocity, 1, 0.0);
   gsl_vector_set(impact_velocity, 2, 0.0);
 
   cuboid.impact(0.0, *impact, *impact_velocity); 

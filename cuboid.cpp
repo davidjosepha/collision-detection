@@ -39,9 +39,18 @@ void Cuboid::impact(float mass, const gsl_vector & position, const gsl_vector & 
     gsl_vector_memcpy(center_to_impact, &position);
     gsl_vector_sub(center_to_impact, center_);
 
+    // find axis to rotation around
     gsl_vector * rotational_axis = gsl_vector_alloc(3);
     crossProduct(*center_to_impact, velocity, *rotational_axis);
+    axis_ = rotational_axis;
     
+    // get the magnitude in the direction of rotation
+    double rotational_magnitude;
+    // this is completely wrong, not exactly sure how it should be though
+    gsl_blas_ddot(center_to_impact, &velocity, &rotational_magnitude);
+    rotation_ = rotational_magnitude;
+    std::cout << rotation_;
+
     // get length of center_to_impact
     float unit_scale = pow(pow(gsl_vector_get(center_to_impact, 0), 2)
                          + pow(gsl_vector_get(center_to_impact, 1), 2)
