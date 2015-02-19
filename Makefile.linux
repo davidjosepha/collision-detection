@@ -1,4 +1,0 @@
-all:
-	g++ main.cpp cuboid.cpp viewer.cpp controller.cpp -o model -lGL -lGLU -lglut -lgsl -lgslcblas -lm -std=gnu++11
-clean:
-	rm *.o model
