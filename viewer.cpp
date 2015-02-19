@@ -15,7 +15,7 @@
 #include "controller.h"
 #include "viewer.h"
 
-#define M_PI 3.1415926535
+//#define M_PI 3.1415926535
 
 Cuboid * Viewer::model_;
 Controller * Viewer::controller_;
@@ -47,6 +47,11 @@ void Viewer::model() {
 
   glPushMatrix();
   //glRotatef(model_->phi()*M_PI, cos(theta), 0.0f, sin(theta));
+  gsl_vector * axis = model_->axis();
+  glRotatef(model_->angle()*M_PI, gsl_vector_get(axis, 0), gsl_vector_get(axis, 1), gsl_vector_get(axis, 2));
+
+  gsl_vector * center = model_->center();
+  glTranslatef(gsl_vector_get(center, 0), gsl_vector_get(center, 1), gsl_vector_get(center, 2));
   glDrawElements(GL_TRIANGLES, model_->k_, GL_UNSIGNED_BYTE, model_->indices());
   glPopMatrix();
 

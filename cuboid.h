@@ -1,20 +1,19 @@
 #ifndef CUBOID_H
 #define CUBOID_H
+#include <gsl/gsl_vector.h>
 
 class Cuboid {
     public:
-        Cuboid();
-        Cuboid(float x, float y, float z, float center[3], float color[3], float mass,
-                float position[3], float axis[3],
-                float velocity[3], float rotation);
+        Cuboid(float x, float y, float z, gsl_vector & center, float mass,
+                gsl_vector & axis, gsl_vector & velocity, float angle, float rotation);
 
-        void impact(float mass, float position[3], float velocity[3]);
+        void impact(float mass, const gsl_vector & position, const gsl_vector & velocity);
 
         void genVerticesAndIndices();
-        GLfloat * position();
-        GLfloat * axis();
-        GLfloat * velocity();
-        GLfloat rotation();
+        gsl_vector * center();
+        gsl_vector * axis();
+        gsl_vector * velocity();
+        GLfloat angle();
 
         GLfloat * vertices();
         GLubyte * indices();
@@ -28,25 +27,23 @@ class Cuboid {
         void genIndices();
 
         void clearVerticesAndIndices();
+        void crossProduct(const gsl_vector & u, const gsl_vector & v, gsl_vector & product);
 
         GLfloat mass_;
 
-        GLfloat position_[3];
-        GLfloat axis_[3];
-
-        GLfloat velocity_[3];
+        gsl_vector * axis_;
+        gsl_vector * velocity_;
+        GLfloat angle_;
         GLfloat rotation_;
 
+        GLfloat vertices_[25*20+3];
+        GLubyte indices_[96*20];
+        GLfloat colors_[25*20];
         //GLfloat vertices_[8*3];
-        GLfloat vertices_[2*25*20+3];
-        GLubyte indices_[2*96*20];
         //GLubyte indices_[12*3*3];
-        GLfloat colors_[2*25*20];
         //GLfloat colors_[12*3*3*8];
 
-        float center_[3], color_[3];
-
-        float theta_axis_[3], phi_axis_[3];
+        gsl_vector * center_;
 };
 
 #endif

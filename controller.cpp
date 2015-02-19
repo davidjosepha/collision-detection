@@ -15,9 +15,6 @@
 #include "cuboid.h"
 #include "controller.h"
 
-#define _USE_MATH_DEFINES
-#define M_PI 3.1415926535
-
 // SuperEllipse Controller::model_;
 
 int Controller::draw_mode_;

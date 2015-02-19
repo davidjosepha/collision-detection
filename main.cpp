@@ -11,25 +11,52 @@
 #else
 #include <GL/glut.h>
 #endif
+#include <gsl/gsl_vector.h>
 #include "cuboid.h"
 #include "controller.h"
 #include "viewer.h"
 
-#define _USE_MATH_DEFINES
-#define M_PI 3.1415926535
-
 int main(int argc, char * argv[]) {
-  float center[3] = {0.0, 0.0, 0.0};
-  float color[3] = {0.0, 1.0, 0.0};
-  float position[3] = {0.0, 0.0, 0.0};
-  float velocity[3] = {0.0, 0.0, 0.0};
-  float axis[3] = {0.0, 1.0, 0.0};
+  //float color[3] = {0.0, 1.0, 0.0};
+  gsl_vector * center = gsl_vector_alloc(3);
+  gsl_vector * velocity = gsl_vector_alloc(3);
+  gsl_vector * axis = gsl_vector_alloc(3);
+
+  gsl_vector_set(center, 0, 0.0);
+  gsl_vector_set(center, 1, 0.0);
+  gsl_vector_set(center, 2, 0.0);
+
+  gsl_vector_set(velocity, 0, 0.0);
+  gsl_vector_set(velocity, 1, 0.0);
+  gsl_vector_set(velocity, 2, 0.0);
+
+  gsl_vector_set(axis, 0, 0.0);
+  gsl_vector_set(axis, 1, 1.0);
+  gsl_vector_set(axis, 2, 0.0);
+  float angle = 0.0;
   float rotation = 0.0;
-  //Cuboid cuboid = Cuboid(1.0,1.0,1.0, center, color, 1.0, position, 0.0, 0.0, velocity, 0.0078125, 0.0078125);
-  Cuboid cuboid = Cuboid(1.0,1.0,1.0, center, color, 1.0, position, axis, velocity, rotation);
+  Cuboid cuboid = Cuboid(1.0,1.0,1.0, *center, 1.0, *axis, *velocity, angle, rotation);
+
+  gsl_vector * impact = gsl_vector_alloc(3);
+  gsl_vector * impact_velocity = gsl_vector_alloc(3);
+
+  gsl_vector_set(impact, 0, 1.0);
+  gsl_vector_set(impact, 1, 1.0);
+  gsl_vector_set(impact, 2, 0.0);
+
+  gsl_vector_set(impact_velocity, 0, -0.001);
+  gsl_vector_set(impact_velocity, 1, -0.001);
+  gsl_vector_set(impact_velocity, 2, 0.0);
+
+  cuboid.impact(0.0, *impact, *impact_velocity); 
   Controller controller = Controller(cuboid);
   Viewer viewer = Viewer(cuboid, controller);
   viewer.initGlut(argc, argv);
 
+  gsl_vector_free(center);
+  gsl_vector_free(velocity);
+  gsl_vector_free(axis);
+  gsl_vector_free(impact);
+  gsl_vector_free(impact_velocity);
   return 0;
 }
