@@ -1,18 +1,18 @@
 #ifndef CUBOID_H
 #define CUBOID_H
-#include <gsl/gsl_vector.h>
+#include "geom_3d.h"
 
 class Cuboid {
     public:
-        Cuboid(float x, float y, float z, gsl_vector & center, float mass,
-                gsl_vector & axis, gsl_vector & velocity, float angle, float rotation);
+        Cuboid(float x, float y, float z, Vec & center, float mass,
+                Vec & axis, Vec & velocity, float angle, float rotation);
 
-        void impact(float mass, const gsl_vector & position, const gsl_vector & velocity);
+        void impact(float mass, const Vec & position, const Vec & velocity);
 
         void genVerticesAndIndices();
-        gsl_vector * center();
-        gsl_vector * axis();
-        gsl_vector * velocity();
+        Vec * center();
+        Vec * axis();
+        Vec * velocity();
         GLfloat angle();
 
         GLfloat * vertices();
@@ -27,12 +27,11 @@ class Cuboid {
         void genIndices();
 
         void clearVerticesAndIndices();
-        void crossProduct(const gsl_vector & u, const gsl_vector & v, gsl_vector & product);
 
         GLfloat mass_;
 
-        gsl_vector * axis_;
-        gsl_vector * velocity_;
+        Vec * axis_;
+        Vec * velocity_;
         GLfloat angle_;
         GLfloat rotation_;
 
@@ -43,7 +42,7 @@ class Cuboid {
         //GLubyte indices_[12*3*3];
         //GLfloat colors_[12*3*3*8];
 
-        gsl_vector * center_;
+        Vec * center_;
 };
 
 #endif

@@ -11,6 +11,7 @@
 #else
 #include <GL/glut.h>
 #endif
+#include "geom_3d.h"
 #include "cuboid.h"
 #include "controller.h"
 #include "viewer.h"
@@ -46,12 +47,23 @@ void Viewer::model() {
   glColorPointer(3, GL_FLOAT, 0, model_->colors());
 
   glPushMatrix();
-  //glRotatef(model_->phi()*M_PI, cos(theta), 0.0f, sin(theta));
-  gsl_vector * axis = model_->axis();
-  glRotatef(model_->angle()*M_PI, gsl_vector_get(axis, 0), gsl_vector_get(axis, 1), gsl_vector_get(axis, 2));
 
-  gsl_vector * center = model_->center();
-  glTranslatef(gsl_vector_get(center, 0), gsl_vector_get(center, 1), gsl_vector_get(center, 2));
+  /*
+   * There's something wrong here. When viewing the cube, it appears
+   * to be rotating about the origin, but getting further away. By
+   * examining the model coordinates, I've found it is not an issue
+   * with the position function of the cube, as it continues to move
+   * further away from the origin in the x-, y-, and z-dimensions.
+   **/
+
+  // rotate the model in place
+  Vec * axis = model_->axis();
+  glRotatef(model_->angle()*M_PI, axis->x, axis->y, axis->z);
+
+  // then translate it to its actual coordinates
+  Vec * center = model_->center();
+  glTranslatef(center->x, center->y, center->z);
+
   glDrawElements(GL_TRIANGLES, model_->k_, GL_UNSIGNED_BYTE, model_->indices());
   glPopMatrix();
 

@@ -7,12 +7,11 @@
 #else
 #include <GL/glut.h>
 #endif
-#include <gsl/gsl_vector.h>
-#include <gsl/gsl_blas.h>
+#include "geom_3d.h"
 #include "cuboid.h"
 
-Cuboid::Cuboid(float x, float y, float z, gsl_vector & center, float mass,
-        gsl_vector & axis, gsl_vector & velocity, float angle, float rotation) {
+Cuboid::Cuboid(float x, float y, float z, Vec & center, float mass,
+        Vec & axis, Vec & velocity, float angle, float rotation) {
 
     x_ = x;
     y_ = y;
@@ -33,58 +32,34 @@ Cuboid::Cuboid(float x, float y, float z, gsl_vector & center, float mass,
     genColors();
 }
 
-void Cuboid::impact(float mass, const gsl_vector & position, const gsl_vector & velocity) {
+void Cuboid::impact(float mass, const Vec & position, const Vec & velocity) {
     // vector from center of mass to point of impact
-    gsl_vector * center_to_impact = gsl_vector_alloc(3);
-    gsl_vector_memcpy(center_to_impact, &position);
-    gsl_vector_sub(center_to_impact, center_);
+    Vec point_of_impact = position - *center_;
+    // unit vector of rotational axis
+    Vec rotational_axis = point_of_impact.Cross(velocity);
 
-    // find axis to rotation around
-    gsl_vector * rotational_axis = gsl_vector_alloc(3);
-    crossProduct(*center_to_impact, velocity, *rotational_axis);
-    axis_ = rotational_axis;
-    
-    // get the magnitude in the direction of rotation
-    double rotational_magnitude;
-    // this is completely wrong, not exactly sure how it should be though
-    gsl_blas_ddot(center_to_impact, &velocity, &rotational_magnitude);
-    rotation_ = rotational_magnitude;
-    std::cout << rotation_;
+    // if there is rotation, there is rotation
+    if (rotational_axis.Norm() != 0.0) {
+        Vec rotational_axis_norm = rotational_axis.Normalized();
 
-    // get length of center_to_impact
-    float unit_scale = pow(pow(gsl_vector_get(center_to_impact, 0), 2)
-                         + pow(gsl_vector_get(center_to_impact, 1), 2)
-                         + pow(gsl_vector_get(center_to_impact, 2), 2), 0.5);
-    // create the unit vector of center_to_impact
-    gsl_vector * unit_cti = gsl_vector_alloc(3);
-    gsl_vector_memcpy(unit_cti, center_to_impact);
-    gsl_vector_scale(unit_cti, 1 / unit_scale);
+        // there has got to be a better way?
+        axis_->x = rotational_axis_norm.x;
+        axis_->y = rotational_axis_norm.y;
+        axis_->z = rotational_axis_norm.z;
 
-    // get the magnitude in the direction of the center of mass from the point of impact
-    double movement_magnitude;
-    gsl_blas_ddot(unit_cti, &velocity, &movement_magnitude);
-    gsl_vector_memcpy(velocity_, unit_cti);
+        Vec tangent = rotational_axis.Cross(point_of_impact).Normalized();
 
-    // scale the vector so its length is the correct magnitude
-    gsl_vector_scale(velocity_, movement_magnitude);
+        float rotational_freq = velocity.Dot(tangent) / point_of_impact.Norm();
+        rotation_ = rotational_freq;
+    }
 
-    // vector normal to both the impact vector and difference vector
-}
+    // change in velocity of center of mass
+    Vec dvelocity = point_of_impact * velocity.Dot(point_of_impact.Normalized());
 
-// taken from https://gist.github.com/jmbr/668083
-void Cuboid::crossProduct(const gsl_vector & u, const gsl_vector & v, gsl_vector & product) {
-    double p1 = gsl_vector_get(&u, 1)*gsl_vector_get(&v, 2)
-        - gsl_vector_get(&u, 2)*gsl_vector_get(&v, 1);
- 
-    double p2 = gsl_vector_get(&u, 2)*gsl_vector_get(&v, 0)
-        - gsl_vector_get(&u, 0)*gsl_vector_get(&v, 2);
- 
-    double p3 = gsl_vector_get(&u, 0)*gsl_vector_get(&v, 1)
-        - gsl_vector_get(&u, 1)*gsl_vector_get(&v, 0);
- 
-    gsl_vector_set(&product, 0, p1);
-    gsl_vector_set(&product, 1, p2);
-    gsl_vector_set(&product, 2, p3);
+    // there has got to be a better way?
+    velocity_->x = dvelocity.x;
+    velocity_->y = dvelocity.y;
+    velocity_->z = dvelocity.z;
 }
 
 void Cuboid::genVerticesAndIndices() {
@@ -92,16 +67,19 @@ void Cuboid::genVerticesAndIndices() {
     genIndices();
 }
 
-gsl_vector * Cuboid::center() {
-    gsl_vector_add(center_, velocity_);
+Vec * Cuboid::center() {
+    *center_ += *velocity_;
+    std::cout << center_->x << ", ";
+    std::cout << center_->x << ", ";
+    std::cout << center_->x << std::endl;
     return center_;
 }
 
-gsl_vector * Cuboid::axis() {
+Vec * Cuboid::axis() {
     return axis_;
 }
 
-gsl_vector * Cuboid::velocity() {
+Vec * Cuboid::velocity() {
     return velocity_;
 }
 
