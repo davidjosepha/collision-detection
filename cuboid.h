@@ -7,7 +7,8 @@ class Cuboid {
         Cuboid(float x, float y, float z, Vec & center, float mass,
                 Vec & axis, Vec & velocity, float angle, float rotation);
 
-        void impact(float mass, const Vec & position, const Vec & velocity);
+        void impact(float mass, const Vec & point, const Vec & velocity);
+        Vec velocityAtPoint(const Vec & point);
 
         void genVerticesAndIndices();
         Vec * center();
@@ -30,9 +31,13 @@ class Cuboid {
 
         GLfloat mass_;
 
+        // the unit vector around which the Cuboid rotates
         Vec * axis_;
+        // the velocity of the center of mass of the Cuboid
         Vec * velocity_;
+        // the current rotation of the Cuboid against the axis (radians)
         GLfloat angle_;
+        // the current rotational frequency of the Cuboid against the axis (radians / t)
         GLfloat rotation_;
 
         GLfloat vertices_[25*20+3];

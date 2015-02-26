@@ -32,34 +32,56 @@ Cuboid::Cuboid(float x, float y, float z, Vec & center, float mass,
     genColors();
 }
 
-void Cuboid::impact(float mass, const Vec & position, const Vec & velocity) {
+void Cuboid::impact(float mass, const Vec & point, const Vec & velocity) {
     // vector from center of mass to point of impact
-    Vec point_of_impact = position - *center_;
+    Vec point_vector = point - *center_;
     // unit vector of rotational axis
-    Vec rotational_axis = point_of_impact.Cross(velocity);
+    Vec rotational_axis = point_vector.Cross(velocity);
 
     // if there is rotation, there is rotation
     if (rotational_axis.Norm() != 0.0) {
         Vec rotational_axis_norm = rotational_axis.Normalized();
 
+
+        Vec tangent = rotational_axis.Cross(point_vector).Normalized();
+
+        float rotational_freq = velocity.Dot(tangent) / point_vector.Norm();
+
+        // take rotation_ and axis_ and create quaternion
+        // multiply by quaternion of shit from above
+        // update to axis and rotation of product quaternion
+
         // there has got to be a better way?
         axis_->x = rotational_axis_norm.x;
         axis_->y = rotational_axis_norm.y;
         axis_->z = rotational_axis_norm.z;
-
-        Vec tangent = rotational_axis.Cross(point_of_impact).Normalized();
-
-        float rotational_freq = velocity.Dot(tangent) / point_of_impact.Norm();
         rotation_ = rotational_freq;
     }
 
     // change in velocity of center of mass
-    Vec dvelocity = point_of_impact * velocity.Dot(point_of_impact.Normalized());
+    Vec dvelocity = point_vector * velocity.Dot(point_vector.Normalized());
 
     // there has got to be a better way?
     velocity_->x = dvelocity.x;
     velocity_->y = dvelocity.y;
     velocity_->z = dvelocity.z;
+}
+
+Vec Cuboid::velocityAtPoint(const Vec & point) {
+    /*
+     * velocity at point s = v + (r_hat x s) ω
+     *     s := a point on the surface of object
+     * r_hat := the unit vector of the rotational axis of the object
+     *     v := velocity of the center of mass of the object
+     *     ω := rotational frequency of the object
+     **/
+    Vec point_vector = point - *center_;
+
+    Vec local_velocity = axis_->Cross(point_vector);
+    local_velocity *= rotation_;
+    local_velocity += *velocity_;
+
+    return local_velocity;
 }
 
 void Cuboid::genVerticesAndIndices() {
@@ -69,9 +91,6 @@ void Cuboid::genVerticesAndIndices() {
 
 Vec * Cuboid::center() {
     *center_ += *velocity_;
-    std::cout << center_->x << ", ";
-    std::cout << center_->x << ", ";
-    std::cout << center_->x << std::endl;
     return center_;
 }
 
