@@ -58,7 +58,7 @@ void Viewer::model() {
 
   // rotate the model in place
   Vec * axis = model_->axis();
-  glRotatef(model_->angle()*M_PI, axis->x, axis->y, axis->z);
+  glRotatef(model_->angle(), axis->x, axis->y, axis->z);
 
   // then translate it to its actual coordinates
   Vec * center = model_->center();
