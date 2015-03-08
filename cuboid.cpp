@@ -32,7 +32,28 @@ Cuboid::Cuboid(float x, float y, float z, Vec & center, float mass,
     genColors();
 }
 
-void Cuboid::impact(float mass, const Vec & point, const Vec & velocity) {
+//                         m_b                                    v_bp1
+void Cuboid::impact(float impact_mass, const Vec & impact_point, const Vec & impact_point_velocity) {
+    // r_p : vector from center of mass to point of impact
+    Vec point_vector = impact_point - *center_;
+    // w_a1 : initial pre-collision angular velocity
+    //
+    // v_ap1 : initial velocity of impact point
+    Vec point_velocity = velocityAtPoint(impact_point);
+    // v_ab1 : initial velocity between two objects at point
+    Vec total_point_velocity = point_velocity - impact_point_velocity;
+
+    // n^
+    Vec normal;
+
+    float elasticity = 1;
+    float impact_param = (-(1 + elasticity) * total_point_velocity * normal) / (1 / mass_ + 1 / impact_mass + (r_ap x normal)**2 / moment_of_inertia_ + (r_bp x normal)**2 / impact_moment_of_inertia)
+    
+    // v_a2 = v_a1 + j n^ / m_a
+    Vec final_velocity = velocity_ + (impulse_param * normal) / mass_
+    // w_a2 = w_a1 + (r_ap x jn^) / I_a
+
+    /*
     // vector from center of mass to point of impact
     Vec point_vector = point - *center_;
     // unit vector of rotational axis
@@ -65,6 +86,7 @@ void Cuboid::impact(float mass, const Vec & point, const Vec & velocity) {
     velocity_->x = dvelocity.x;
     velocity_->y = dvelocity.y;
     velocity_->z = dvelocity.z;
+    */
 }
 
 Vec Cuboid::velocityAtPoint(const Vec & point) {
