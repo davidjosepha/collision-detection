@@ -45,6 +45,7 @@ void Cuboid::impact(const Vec & collision_point, float impact_mass,
     // r_bp : vector from center of mass of colliding object to point of impact
     Vec impact_point_vector = collision_point - impact_center;
     // w_a1 : initial pre-collision angular velocity
+    Vec angular_velocity = *axis_ * rotation_;
     //
     // v_ap1 : initial velocity of impact point
     Vec point_velocity = velocityAtPoint(collision_point);
@@ -61,44 +62,16 @@ void Cuboid::impact(const Vec & collision_point, float impact_mass,
               );
     
     // v_a2 = v_a1 + j n^ / m_a
-    *velocity_ += (impact_normal_unit * impulse_param) / mass_;
+    *velocity_ = (impact_normal_unit * impulse_param) / mass_;
     // w_a2 = w_a1 + (r_ap x jn^) / I_a
-    //w_a2 = w_a1 + point_vector.Cross(impact_normal_unit * impulse_param) / moment_of_inertia_;
-
-    /*
-    // vector from center of mass to point of impact
-    Vec point_vector = point - *center_;
-    // unit vector of rotational axis
-    Vec rotational_axis = point_vector.Cross(velocity);
-
-    // if there is rotation, there is rotation
-    if (rotational_axis.Norm() != 0.0) {
-        Vec rotational_axis_norm = rotational_axis.Normalized();
+    Vec final_angular_velocity = angular_velocity + point_vector.Cross(impact_normal_unit * impulse_param) / moment_of_inertia_;
+    *axis_ = final_angular_velocity.Normalized();
+    rotation_ = final_angular_velocity.Norm();
 
 
-        Vec tangent = rotational_axis.Cross(point_vector).Normalized();
-
-        float rotational_freq = velocity.Dot(tangent) / point_vector.Norm();
-
-        // take rotation_ and axis_ and create quaternion
-        // multiply by quaternion of shit from above
-        // update to axis and rotation of product quaternion
-
-        // there has got to be a better way?
-        axis_->x = rotational_axis_norm.x;
-        axis_->y = rotational_axis_norm.y;
-        axis_->z = rotational_axis_norm.z;
-        rotation_ = rotational_freq;
-    }
-
-    // change in velocity of center of mass
-    Vec dvelocity = point_vector * velocity.Dot(point_vector.Normalized());
-
-    // there has got to be a better way?
-    velocity_->x = dvelocity.x;
-    velocity_->y = dvelocity.y;
-    velocity_->z = dvelocity.z;
-    */
+    std::cout << velocity_->x << ", ";
+    std::cout << velocity_->y << ", ";
+    std::cout << velocity_->z;
 }
 
 Vec Cuboid::velocityAtPoint(const Vec & point) {
