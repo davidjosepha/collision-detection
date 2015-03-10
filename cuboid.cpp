@@ -19,6 +19,8 @@ Cuboid::Cuboid(float x, float y, float z, Vec & center, float mass,
     k_ = 3*3*12;
 
     mass_ = mass;
+    moment_of_inertia_ = mass_ * (pow(x,2) * pow(y,2) + pow(x,2) * pow(z,2) + pow(y,2) * pow(z,2))
+                         / (6 * (pow(x,2) + pow(y,2) + pow(z,2)));
     angle_ = angle;
     rotation_ = rotation;
 
@@ -32,26 +34,36 @@ Cuboid::Cuboid(float x, float y, float z, Vec & center, float mass,
     genColors();
 }
 
-//                         m_b                                    v_bp1
-void Cuboid::impact(float impact_mass, const Vec & impact_point, const Vec & impact_point_velocity) {
-    // r_p : vector from center of mass to point of impact
-    Vec point_vector = impact_point - *center_;
+//                                            m_b                      
+//                                                     I_b
+//                              v_bp1                              n^
+void Cuboid::impact(const Vec & collision_point, float impact_mass,
+                    const Vec & impact_center, float impact_moment_of_inertia,
+                    const Vec & impact_point_velocity, const Vec & impact_normal_unit) {
+    // r_ap : vector from center of mass to point of impact
+    Vec point_vector = collision_point - *center_;
+    // r_bp : vector from center of mass of colliding object to point of impact
+    Vec impact_point_vector = collision_point - impact_center;
     // w_a1 : initial pre-collision angular velocity
     //
     // v_ap1 : initial velocity of impact point
-    Vec point_velocity = velocityAtPoint(impact_point);
+    Vec point_velocity = velocityAtPoint(collision_point);
     // v_ab1 : initial velocity between two objects at point
     Vec total_point_velocity = point_velocity - impact_point_velocity;
 
-    // n^
-    Vec normal;
-
     float elasticity = 1;
-    float impact_param = (-(1 + elasticity) * total_point_velocity * normal) / (1 / mass_ + 1 / impact_mass + (r_ap x normal)**2 / moment_of_inertia_ + (r_bp x normal)**2 / impact_moment_of_inertia)
+    // j : myphysicslab.com/collision.html
+    float impulse_param = (-(1 + elasticity) * total_point_velocity.Dot(impact_normal_unit))
+            / (
+                1 / mass_ + 1 / impact_mass
+                + point_vector.Cross(impact_normal_unit).Norm2() / moment_of_inertia_
+                + impact_point_vector.Cross(impact_normal_unit).Norm2() / impact_moment_of_inertia
+              );
     
     // v_a2 = v_a1 + j n^ / m_a
-    Vec final_velocity = velocity_ + (impulse_param * normal) / mass_
+    *velocity_ += (impact_normal_unit * impulse_param) / mass_;
     // w_a2 = w_a1 + (r_ap x jn^) / I_a
+    //w_a2 = w_a1 + point_vector.Cross(impact_normal_unit * impulse_param) / moment_of_inertia_;
 
     /*
     // vector from center of mass to point of impact

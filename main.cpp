@@ -29,9 +29,12 @@ int main(int argc, char * argv[]) {
   //Vec impact_position = Vec(1.0, 1.0, 0.0);
   //Vec impact_velocity = Vec(0.003, -0.003, 0.0);
   Vec impact_position = Vec(0.750, 0.333, 1.0);
+  Vec impact_center = Vec(3.0, 3.0, 3.0);
   Vec impact_velocity = Vec(0.703, -0.403, -0.3);
 
-  cuboid.impact(0.0, impact_position, impact_velocity); 
+  cuboid.impact(impact_position, 12.0,
+                impact_center, 2.0,
+                impact_velocity, Vec(-1.0, -1.0, -1.0).Normalized()); 
 
   Controller controller = Controller(cuboid);
   Viewer viewer = Viewer(cuboid, controller);

@@ -7,7 +7,9 @@ class Cuboid {
         Cuboid(float x, float y, float z, Vec & center, float mass,
                 Vec & axis, Vec & velocity, float angle, float rotation);
 
-        void impact(float mass, const Vec & point, const Vec & velocity);
+        void impact(const Vec & collision_point, float impact_mass,
+                    const Vec & impact_center, float impact_moment_of_inertia,
+                    const Vec & impact_point_velocity, const Vec & impact_normal_unit);
         Vec velocityAtPoint(const Vec & point);
 
         void genVerticesAndIndices();
@@ -30,6 +32,7 @@ class Cuboid {
         void clearVerticesAndIndices();
 
         GLfloat mass_;
+        GLfloat moment_of_inertia_;
 
         // the unit vector around which the Cuboid rotates
         Vec * axis_;
