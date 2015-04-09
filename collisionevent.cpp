@@ -20,19 +20,19 @@ CollisionEvent::CollisionEvent(Cuboid &object, float time,
   angular_velocity_ = angular_velocity;
 }
 
-Cuboid* CollisionEvent::object() {
-  return object_;
+Cuboid & CollisionEvent::object() {
+  return *object_;
 }
 
 float CollisionEvent::time() {
   return time_;
 }
 
-glm::vec3 CollisionEvent::coordinates() {
+glm::vec3 & CollisionEvent::coordinates() {
   return coordinates_;
 }
 
-glm::vec3 CollisionEvent::axis() {
+glm::vec3 & CollisionEvent::axis() {
   return axis_;
 }
 
@@ -40,7 +40,7 @@ float CollisionEvent::angle() {
   return angle_;
 }
 
-glm::vec3 CollisionEvent::velocity() {
+glm::vec3 & CollisionEvent::velocity() {
   return velocity_;
 }
 

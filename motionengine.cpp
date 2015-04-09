@@ -19,12 +19,11 @@ MotionEngine::MotionEngine() { }
 void MotionEngine::position(CollisionEvent & event, float time, Cuboid & object, GLfloat (& vertices)[ARRAY_SIZE]) {
   float dtime = time - event.time();
 
-  //rotate(dtime, event.angle(), event.axis(), vertices);
-  //translate(dtime, event.coordinates(), event.velocity(), vertices);
+  rotate(dtime, event.angle(), event.axis(), vertices);
+  translate(dtime, event.coordinates(), event.velocity(), vertices);
 }
 
 void MotionEngine::rotate(float dtime, float angle, glm::vec3 & axis, GLfloat (& vertices)[ARRAY_SIZE]) {
-  // to do, use glm for data in other areas to avoid stupid conversions like this one
   glm::fquat qrot = glm::fquat(cosf(angle / 2.0), axis * sinf(angle / 2.0));
   normalize(qrot);
 

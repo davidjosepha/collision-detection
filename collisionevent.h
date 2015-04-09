@@ -7,12 +7,12 @@ class CollisionEvent {
                     glm::vec3 coordinates, glm::vec3 axis, float angle,
                     glm::vec3 velocity, float angular_velocity);
 
-    Cuboid* object();
+    Cuboid & object();
     float time();
-    glm::vec3 coordinates();
-    glm::vec3 axis();
+    glm::vec3 & coordinates();
+    glm::vec3 & axis();
     float angle();
-    glm::vec3 velocity();
+    glm::vec3 & velocity();
     float angular_velocity();
 
   private:
