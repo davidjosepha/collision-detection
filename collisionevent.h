@@ -4,24 +4,24 @@
 class CollisionEvent {
   public:
     CollisionEvent(Cuboid &object, float time,
-                    Vec coordinates, Vec axis, float angle,
-                    Vec velocity, float angular_velocity);
+                    glm::vec3 coordinates, glm::vec3 axis, float angle,
+                    glm::vec3 velocity, float angular_velocity);
 
     Cuboid* object();
     float time();
-    Vec coordinates();
-    Vec axis();
+    glm::vec3 coordinates();
+    glm::vec3 axis();
     float angle();
-    Vec velocity();
+    glm::vec3 velocity();
     float angular_velocity();
 
   private:
     Cuboid* object_;
     float time_;
-    Vec coordinates_;
-    Vec axis_;
+    glm::vec3 coordinates_;
+    glm::vec3 axis_;
     float angle_;
-    Vec velocity_;
+    glm::vec3 velocity_;
     float angular_velocity_;
 };
 

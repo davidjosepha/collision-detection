@@ -3,13 +3,14 @@
 #else
 #include <GL/glut.h>
 #endif
+#include <glm/glm.hpp>
 #include "geom_3d.h"
 #include "cuboid.h"
 #include "collisionevent.h"
 
 CollisionEvent::CollisionEvent(Cuboid &object, float time,
-                Vec coordinates, Vec axis, float angle,
-                Vec velocity, float angular_velocity) {
+                glm::vec3 coordinates, glm::vec3 axis, float angle,
+                glm::vec3 velocity, float angular_velocity) {
   object_ = &object;
   time_ = time;
   coordinates_ = coordinates;
@@ -27,11 +28,11 @@ float CollisionEvent::time() {
   return time_;
 }
 
-Vec CollisionEvent::coordinates() {
+glm::vec3 CollisionEvent::coordinates() {
   return coordinates_;
 }
 
-Vec CollisionEvent::axis() {
+glm::vec3 CollisionEvent::axis() {
   return axis_;
 }
 
@@ -39,7 +40,7 @@ float CollisionEvent::angle() {
   return angle_;
 }
 
-Vec CollisionEvent::velocity() {
+glm::vec3 CollisionEvent::velocity() {
   return velocity_;
 }
 
