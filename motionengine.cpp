@@ -16,7 +16,7 @@
 
 MotionEngine::MotionEngine() { }
 
-void MotionEngine::position(CollisionEvent & event, float time, Cuboid & object, GLfloat (& vertices)[ARRAY_SIZE]) {
+void MotionEngine::pose(CollisionEvent & event, float time, Cuboid & object, GLfloat (& vertices)[ARRAY_SIZE]) {
   float dtime = time - event.time();
 
   rotate(dtime, event.angle(), event.axis(), vertices);

@@ -5,7 +5,7 @@
 class MotionEngine {
   public:
     MotionEngine();
-    void position(CollisionEvent & event, float time, Cuboid & object, GLfloat (& vertices)[ARRAY_SIZE]);
+    void pose(CollisionEvent & event, float time, Cuboid & object, GLfloat (& vertices)[ARRAY_SIZE]);
 
   private:
     void rotate(float dtime, float angle, glm::vec3 & axis, GLfloat (& vertices)[ARRAY_SIZE]);
