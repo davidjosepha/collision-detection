@@ -16,7 +16,7 @@ class CollisionEvent {
     float initial_angle();
 
     glm::vec3 & velocity();
-    glm::vec3 & axis_of_rotation_;
+    glm::vec3 & axis_of_rotation();
     float angular_velocity();
 
   private:
