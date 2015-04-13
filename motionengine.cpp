@@ -9,7 +9,6 @@
 #endif
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
-#include "geom_3d.h"
 #include "cuboid.h"
 #include "collisionevent.h"
 #include "motionengine.h"

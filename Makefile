@@ -18,6 +18,6 @@ else
 endif
 
 all:
-	$(CC) main.cpp cuboid.cpp collisionevent.cpp motionengine.cpp viewer.cpp controller.cpp -o model $(CCFLAGS)
+	$(CC) collisionevent.cpp motionengine.cpp -o model $(CCFLAGS)
 clean:
 	rm *.o model

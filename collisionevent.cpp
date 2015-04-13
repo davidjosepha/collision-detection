@@ -4,7 +4,6 @@
 #include <GL/glut.h>
 #endif
 #include <glm/glm.hpp>
-#include "geom_3d.h"
 #include "cuboid.h"
 #include "collisionevent.h"
 
