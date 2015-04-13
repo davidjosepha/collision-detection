@@ -16,33 +16,24 @@
 
 MotionEngine::MotionEngine() { }
 
-void MotionEngine::pose(CollisionEvent & event, float time, Cuboid & object, GLfloat (& vertices)[ARRAY_SIZE]) {
+void MotionEngine::pose(CollisionEvent & event, float time, Cuboid & object, glm::mat4 & pmat) {
   float dtime = time - event.time();
 
-  rotate(dtime, event.angle(), event.axis(), vertices);
-  translate(dtime, event.coordinates(), event.velocity(), vertices);
+  glm::mat4 irot = irotate(event.initial_angle(), event.initial_axis());
+  glm::mat4 trot = trotate(dtime, event.initial_angle(), event.axis_of_rotation());
+  glm::mat4 trans = translate(dtime, event.initial_coordinates(), event.velocity());
+
+  pmat = trans * trot * irot;
 }
 
-void MotionEngine::rotate(float dtime, float angle, glm::vec3 & axis, GLfloat (& vertices)[ARRAY_SIZE]) {
-  glm::fquat qrot = glm::fquat(cosf(angle / 2.0), axis * sinf(angle / 2.0));
-  normalize(qrot);
-
-   // cos(theta)I + sin(theta)[u]_x + (1 - cos(theta))(u tensorprod u)
-  for (int i = 0; i < ARRAY_SIZE; i += 3) {
-    glm::vec4 ptrot = qrot * glm::vec4(vertices[i], vertices[i + 1], vertices[i + 2], 1.0f);
-
-    vertices[i] = ptrot.x;
-    vertices[i + 1] = ptrot.y;
-    vertices[i + 2] = ptrot.z;
-  }
+glm::mat4 MotionEngine::irotate(float angle, glm::vec3 & axis) {
+  return glm::rotate(glm::mat4(1.0f), angle, axis);
 }
 
-void MotionEngine::translate(float dtime, glm::vec3 & coordinates, glm::vec3 & velocity, GLfloat (& vertices)[ARRAY_SIZE]) {
-  glm::vec3 dist = coordinates + dtime * velocity;
+glm::mat4 MotionEngine::trotate(float dtime, float angle, glm::vec3 & axis) {
+  return glm::rotate(glm::mat4(1.0f), angle, axis);
+}
 
-  for (int i = 0; i < ARRAY_SIZE; i += 3) {
-    vertices[i] += dist.x;
-    vertices[i + 1] += dist.y;
-    vertices[i + 2] += dist.z;
-  }
+glm::mat4 MotionEngine::translate(float dtime, glm::vec3 & coordinates, glm::vec3 & velocity) {
+  return glm::translate(glm::mat4(1.0f), coordinates + dtime * velocity);
 }

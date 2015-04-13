@@ -1,15 +1,15 @@
 #ifndef MOTIONENGINE_H
 #define MOTIONENGINE_H
-#define ARRAY_SIZE 1000
 
 class MotionEngine {
   public:
     MotionEngine();
-    void pose(CollisionEvent & event, float time, Cuboid & object, GLfloat (& vertices)[ARRAY_SIZE]);
+    void pose(CollisionEvent & event, float time, Cuboid & object, glm::mat4 & pmat);
 
   private:
-    void rotate(float dtime, float angle, glm::vec3 & axis, GLfloat (& vertices)[ARRAY_SIZE]);
-    void translate(float dtime, glm::vec3 & coordinates, glm::vec3 & velocity, GLfloat (& vertices)[ARRAY_SIZE]);
+    glm::mat4 irotate(float angle, glm::vec3 & axis);
+    glm::mat4 trotate(float dtime, float angle, glm::vec3 & axis);
+    glm::mat4 translate(float dtime, glm::vec3 & coordinates, glm::vec3 & velocity);
 };
 
 #endif
