@@ -18,6 +18,8 @@
 
 Object * Viewer::model_;
 
+Viewer::Viewer() {}
+
 Viewer::Viewer(Object & model) {
   model_ = &model;
 }

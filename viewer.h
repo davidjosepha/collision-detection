@@ -4,6 +4,7 @@
 //
 class Viewer {
   public:
+    Viewer();
     Viewer(Object & model);
     static void initGlut(int argc, char * argv[]);
 
