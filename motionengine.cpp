@@ -25,13 +25,13 @@ void MotionEngine::pose(CollisionEvent & event, float time, glm::mat4 & pmat) {
 }
 
 glm::mat4 MotionEngine::irotate(float angle, glm::vec3 & axis) {
-  return glm::rotate(glm::mat4(1.0f), angle, axis);
+  return glm::rotate(angle, axis);
 }
 
 glm::mat4 MotionEngine::trotate(float dtime, float angle, glm::vec3 & axis) {
-  return glm::rotate(glm::mat4(1.0f), angle, axis);
+  return glm::rotate(angle, axis);
 }
 
 glm::mat4 MotionEngine::translate(float dtime, glm::vec3 & coordinates, glm::vec3 & velocity) {
-  return glm::translate(glm::mat4(1.0f), coordinates + dtime * velocity);
+  return glm::translate(coordinates + dtime * velocity);
 }
