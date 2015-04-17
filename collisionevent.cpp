@@ -4,15 +4,14 @@
 #include <GL/glut.h>
 #endif
 #include <glm/glm.hpp>
-#include "cuboid.h"
 #include "collisionevent.h"
 
-CollisionEvent::CollisionEvent(Cuboid &object, float time,
+CollisionEvent::CollisionEvent(int object, float time,
                         glm::vec3 initial_coordinates, glm::vec3 initial_axis,
                         float initial_angle,
                         glm::vec3 axis_of_rotation, glm::vec3 velocity,
                         float angular_velocity) {
-  object_ = &object;
+  object_ = object;
   time_ = time;
   initial_coordinates_ = initial_coordinates;
   initial_axis_ = initial_axis;
@@ -23,8 +22,8 @@ CollisionEvent::CollisionEvent(Cuboid &object, float time,
   angular_velocity_ = angular_velocity;
 }
 
-Cuboid & CollisionEvent::object() {
-  return *object_;
+int CollisionEvent::object() {
+  return object_;
 }
 
 float CollisionEvent::time() {

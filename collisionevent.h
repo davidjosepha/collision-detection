@@ -3,13 +3,13 @@
 
 class CollisionEvent {
   public:
-    CollisionEvent(Cuboid &object, float time,
+    CollisionEvent(int object, float time,
                     glm::vec3 initial_coordinates_, glm::vec3 initial_axis,
                     float initial_angle,
                     glm::vec3 axis_of_rotation_, glm::vec3 velocity,
                     float angular_velocity);
 
-    Cuboid & object();
+    int object();
     float time();
     glm::vec3 & initial_coordinates();
     glm::vec3 & initial_axis();
@@ -20,7 +20,7 @@ class CollisionEvent {
     float angular_velocity();
 
   private:
-    Cuboid* object_;  // TODO: Use an entity id instead.
+    int object_;  // TODO: Use an entity id instead.
     double time_;
     glm::vec3 initial_coordinates_;
     glm::vec3 initial_axis_;
