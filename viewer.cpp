@@ -12,6 +12,7 @@
 #else
 #include <GL/glut.h>
 #endif
+#include <glm/glm.hpp>
 #include "object.h"
 #include "viewer.h"
 
@@ -22,6 +23,7 @@ Viewer::Viewer(Object & model) {
 }
 
 void Viewer::model() {
+    /*
   // Access each model from the list and use the vertex and index arrays from each
 //  model_->genVerticesAndIndices();
 
@@ -36,6 +38,7 @@ void Viewer::model() {
 
   glDisableClientState(GL_VERTEX_ARRAY);
 //  glDisableClientState(GL_COLOR_ARRAY);
+//  */
 }
 
 void Viewer::display() {
@@ -43,7 +46,6 @@ void Viewer::display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity(); // Reset transformations
 
-  camera();
   glEnable(GL_DEPTH_TEST); //enable the depth testing
   
   model();
