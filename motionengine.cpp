@@ -9,13 +9,12 @@
 #endif
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
-#include "cuboid.h"
 #include "collisionevent.h"
 #include "motionengine.h"
 
 MotionEngine::MotionEngine() { }
 
-void MotionEngine::pose(CollisionEvent & event, float time, Cuboid & object, glm::mat4 & pmat) {
+void MotionEngine::pose(CollisionEvent & event, float time, glm::mat4 & pmat) {
   float dtime = time - event.time();
 
   glm::mat4 irot = irotate(event.initial_angle(), event.initial_axis());

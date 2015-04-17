@@ -4,7 +4,7 @@
 class MotionEngine {
   public:
     MotionEngine();
-    void pose(CollisionEvent & event, float time, Cuboid & object, glm::mat4 & pmat);
+    void pose(CollisionEvent & event, float time, glm::mat4 & pmat);
 
   private:
     glm::mat4 irotate(float angle, glm::vec3 & axis);
