@@ -7,11 +7,10 @@
 #else
 #include <GL/glut.h>
 #endif
-#include "geom_3d.h"
 #include "cuboid.h"
 
-Cuboid::Cuboid(float x, float y, float z, Vec & center, float mass,
-        Vec & axis, Vec & velocity, float angle, float rotation) {
+Cuboid::Cuboid(float x, float y, float z, glm::vec3 & center, float mass,
+        glm::vec3 & axis, glm::vec3 & velocity, float angle, float rotation) {
 
     x_ = x;
     y_ = y;
@@ -37,20 +36,20 @@ Cuboid::Cuboid(float x, float y, float z, Vec & center, float mass,
 //                                            m_b                      
 //                                                     I_b
 //                              v_bp1                              n^
-void Cuboid::impact(const Vec & collision_point, float impact_mass,
-                    const Vec & impact_center, float impact_moment_of_inertia,
-                    const Vec & impact_point_velocity, const Vec & impact_normal_unit) {
+void Cuboid::impact(const glm::vec3 & collision_point, float impact_mass,
+                    const glm::vec3 & impact_center, float impact_moment_of_inertia,
+                    const glm::vec3 & impact_point_velocity, const glm::vec3 & impact_normal_unit) {
     // r_ap : vector from center of mass to point of impact
-    Vec point_vector = collision_point - *center_;
+    glm::vec3 point_vector = collision_point - *center_;
     // r_bp : vector from center of mass of colliding object to point of impact
-    Vec impact_point_vector = collision_point - impact_center;
+    glm::vec3 impact_point_vector = collision_point - impact_center;
     // w_a1 : initial pre-collision angular velocity
-    Vec angular_velocity = *axis_ * rotation_;
+    glm::vec3 angular_velocity = *axis_ * rotation_;
     //
     // v_ap1 : initial velocity of impact point
-    Vec point_velocity = velocityAtPoint(collision_point);
+    glm::vec3 point_velocity = velocityAtPoint(collision_point);
     // v_ab1 : initial velocity between two objects at point
-    Vec total_point_velocity = point_velocity - impact_point_velocity;
+    glm::vec3 total_point_velocity = point_velocity - impact_point_velocity;
 
     float elasticity = 1;
     // j : myphysicslab.com/collision.html
@@ -64,17 +63,12 @@ void Cuboid::impact(const Vec & collision_point, float impact_mass,
     // v_a2 = v_a1 + j n^ / m_a
     *velocity_ = (impact_normal_unit * impulse_param) / mass_;
     // w_a2 = w_a1 + (r_ap x jn^) / I_a
-    Vec final_angular_velocity = angular_velocity + point_vector.Cross(impact_normal_unit * impulse_param) / moment_of_inertia_;
+    glm::vec3 final_angular_velocity = angular_velocity + point_vector.Cross(impact_normal_unit * impulse_param) / moment_of_inertia_;
     *axis_ = final_angular_velocity.Normalized();
     rotation_ = final_angular_velocity.Norm();
-
-
-    std::cout << velocity_->x << ", ";
-    std::cout << velocity_->y << ", ";
-    std::cout << velocity_->z;
 }
 
-Vec Cuboid::velocityAtPoint(const Vec & point) {
+glm::vec3 Cuboid::velocityAtPoint(const glm::vec3 & point) {
     /*
      * velocity at point s = v + (r_hat x s) ω
      *     s := a point on the surface of object
@@ -82,9 +76,9 @@ Vec Cuboid::velocityAtPoint(const Vec & point) {
      *     v := velocity of the center of mass of the object
      *     ω := rotational frequency of the object
      **/
-    Vec point_vector = point - *center_;
+    glm::vec3 point_vector = point - *center_;
 
-    Vec local_velocity = axis_->Cross(point_vector);
+    glm::vec3 local_velocity = axis_->Cross(point_vector);
     local_velocity *= rotation_;
     local_velocity += *velocity_;
 
@@ -96,16 +90,16 @@ void Cuboid::genVerticesAndIndices() {
     genIndices();
 }
 
-Vec * Cuboid::center() {
+glm::vec3 * Cuboid::center() {
     *center_ += *velocity_;
     return center_;
 }
 
-Vec * Cuboid::axis() {
+glm::vec3 * Cuboid::axis() {
     return axis_;
 }
 
-Vec * Cuboid::velocity() {
+glm::vec3 * Cuboid::velocity() {
     return velocity_;
 }
 
