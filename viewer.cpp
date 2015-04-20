@@ -25,25 +25,29 @@ Viewer::Viewer(Object & model) {
 }
 
 void Viewer::model() {
-  // Access each model from the list and use the vertex and index arrays from each
-//  model_->genVerticesAndIndices();
   glEnableClientState(GL_VERTEX_ARRAY);
-  //glEnableClientState(GL_COLOR_ARRAY);
+  glEnableClientState(GL_COLOR_ARRAY);
   glVertexPointer(3, GL_FLOAT, 0, model_->verts());
-  //glColorPointer(3, GL_FLOAT, 0, model_->colors());
+  glColorPointer(3, GL_FLOAT, 0, model_->verts());
 
   glPushMatrix();
-  glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_BYTE, model_->tris());
+  glDrawElements(GL_TRIANGLES, model_->numtris(), GL_UNSIGNED_BYTE, model_->tris());
   glPopMatrix();
 
   glDisableClientState(GL_VERTEX_ARRAY);
-//  glDisableClientState(GL_COLOR_ARRAY);
+  glDisableClientState(GL_COLOR_ARRAY);
 }
 
 void Viewer::display() {
   glClearColor(0.0,0.0,0.0,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity(); // Reset transformations
+
+  // default camera position
+  glTranslatef(0., 0., -10.);
+
+  // default to showing the borders of triangles
+  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   glEnable(GL_DEPTH_TEST); //enable the depth testing
   
