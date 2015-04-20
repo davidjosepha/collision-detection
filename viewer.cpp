@@ -25,22 +25,19 @@ Viewer::Viewer(Object & model) {
 }
 
 void Viewer::model() {
-    /*
   // Access each model from the list and use the vertex and index arrays from each
 //  model_->genVerticesAndIndices();
-
   glEnableClientState(GL_VERTEX_ARRAY);
   //glEnableClientState(GL_COLOR_ARRAY);
-  glVertexPointer(3, GL_FLOAT, 0, model_->vertices());
+  glVertexPointer(3, GL_FLOAT, 0, model_->verts());
   //glColorPointer(3, GL_FLOAT, 0, model_->colors());
 
   glPushMatrix();
-  glDrawElements(GL_TRIANGLES, 4*3*(model_->k_*8), GL_UNSIGNED_BYTE, model_->indices());
+  glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_BYTE, model_->tris());
   glPopMatrix();
 
   glDisableClientState(GL_VERTEX_ARRAY);
 //  glDisableClientState(GL_COLOR_ARRAY);
-//  */
 }
 
 void Viewer::display() {

@@ -1,55 +1,29 @@
 #ifndef CUBOID_H
 #define CUBOID_H
+#include "object.h"
+#include <glm/glm.hpp>
 
-class Cuboid {
-    public:
-        Cuboid(float x, float y, float z, glm::vec3 & center, float mass,
-                glm::vec3 & axis, glm::vec3 & velocity, float angle, float rotation);
+class Cuboid : public Object {
+  public:
+    Cuboid(float x, float y, float z, float mass);
 
-        void impact(const glm::vec3 & collision_point, float impact_mass,
-                    const glm::vec3 & impact_center, float impact_moment_of_inertia,
-                    const glm::vec3 & impact_point_velocity, const glm::vec3 & impact_normal_unit);
-        glm::vec3 velocityAtPoint(const glm::vec3 & point);
+    virtual const glm::vec3 * verts() const { return verts_; }
+    virtual const glm::highp_ivec3 * tris() const { return tris_; }
+    virtual int numverts() const { return NUM_VERTS; }
+    virtual int numtris() const { return NUM_TRIS; }
 
-        void genVerticesAndIndices();
-        glm::vec3 * center();
-        glm::vec3 * axis();
-        glm::vec3 * velocity();
-        GLfloat angle();
+  private:
+    const static int NUM_VERTS = 8;
+    const static int NUM_TRIS = 12;
+    glm::vec3 verts_[NUM_VERTS];
+    glm::highp_ivec3 tris_[NUM_TRIS] = {
+      { 0, 3, 1 },  { 0, 1, 5 },  { 0, 5, 3 },
+      { 2, 1, 3 },  { 2, 7, 1 },  { 2, 3, 7 },
+      { 4, 5, 1 },  { 4, 1, 7 },  { 4, 7, 5 },
+      { 6, 3, 5 },  { 6, 7, 3 },  { 6, 5, 7 }
+    };
 
-        GLfloat * vertices();
-        GLubyte * indices();
-        GLfloat * colors();
-
-        float x_, y_, z_, k_;
-
-    private:
-        void genColors();
-        void genVertices();
-        void genIndices();
-
-        void clearVerticesAndIndices();
-
-        GLfloat mass_;
-        GLfloat moment_of_inertia_;
-
-        // the unit vector around which the Cuboid rotates
-        glm::vec3 * axis_;
-        // the velocity of the center of mass of the Cuboid
-        glm::vec3 * velocity_;
-        // the current rotation of the Cuboid against the axis (radians)
-        GLfloat angle_;
-        // the current rotational frequency of the Cuboid against the axis (radians / t)
-        GLfloat rotation_;
-
-        GLfloat vertices_[25*20+3];
-        GLubyte indices_[96*20];
-        GLfloat colors_[25*20];
-        //GLfloat vertices_[8*3];
-        //GLubyte indices_[12*3*3];
-        //GLfloat colors_[12*3*3*8];
-
-        glm::vec3 * center_;
+    void genverts(const float & x, const float & y, const float & z);
 };
 
 #endif
