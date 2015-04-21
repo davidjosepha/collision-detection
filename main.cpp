@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include <iostream>
+#include <vector>
 #define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -14,7 +14,10 @@
 
 int main(int argc, char * argv[]) {
   Cuboid cube = Cuboid(1.0, 1.0, 1.0, 10.0);
-  Viewer viewer = Viewer(cube);
+  std::vector<Object*> objects = std::vector<Object*>();
+  objects.push_back(&cube);
+
+  Viewer viewer = Viewer(objects);
   viewer.initGlut(argc, argv);
 
   return 0;

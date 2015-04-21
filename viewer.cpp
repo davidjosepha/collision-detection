@@ -1,5 +1,5 @@
 #include <cstdio>
-#include <cmath>
+#include <vector>
 #define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -14,8 +14,8 @@ Object * Viewer::model_;
 
 Viewer::Viewer() {}
 
-Viewer::Viewer(Object & model) {
-  model_ = &model;
+Viewer::Viewer(std::vector<Object*> & objects) {
+  model_ = objects[0];
 }
 
 void Viewer::model() {

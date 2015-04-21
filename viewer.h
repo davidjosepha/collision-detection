@@ -5,7 +5,7 @@
 class Viewer {
   public:
     Viewer();
-    Viewer(Object & model);
+    Viewer(std::vector<Object*> & objects);
     static void initGlut(int argc, char * argv[]);
 
   private:
