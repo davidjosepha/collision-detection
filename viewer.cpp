@@ -1,3 +1,5 @@
+#include <cstdio>
+#include <cmath>
 #define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -19,11 +21,12 @@ Viewer::Viewer(Object & model) {
 void Viewer::model() {
   glEnableClientState(GL_VERTEX_ARRAY);
   glEnableClientState(GL_COLOR_ARRAY);
+
   glVertexPointer(3, GL_FLOAT, 0, model_->verts());
   glColorPointer(3, GL_FLOAT, 0, model_->verts());
 
   glPushMatrix();
-  glDrawElements(GL_TRIANGLES, 3 * model_->numtris(), GL_UNSIGNED_BYTE, model_->tris());
+  glDrawElements(GL_TRIANGLES, 3 * model_->numtris(), GL_UNSIGNED_INT, model_->tris());
   glPopMatrix();
 
   glDisableClientState(GL_VERTEX_ARRAY);
@@ -36,10 +39,11 @@ void Viewer::display() {
   glLoadIdentity(); // Reset transformations
 
   // default camera position
-  glTranslatef(0., 0., -10.);
+  glTranslatef(0., 0., -3.);
 
   // default to showing the borders of triangles
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
   glEnable(GL_DEPTH_TEST); //enable the depth testing
   
@@ -68,11 +72,11 @@ void Viewer::initGlut(int argc, char * argv[]) {
 
   // Create window
   glutInitWindowSize(1000,800);
-  glutCreateWindow("Awesome Cube");
+  glutCreateWindow("Collision Detection Demo");
 
   //  Enable Z-buffer depth test
   glClearDepth(1.0f);
-  //glDepthFunc(GL_LEQUAL);
+  glDepthFunc(GL_LEQUAL);
   glEnable(GL_DEPTH_TEST);
 
   // Callback functions

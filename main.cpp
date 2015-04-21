@@ -13,7 +13,7 @@
 #include "viewer.h"
 
 int main(int argc, char * argv[]) {
-  Cuboid cube = Cuboid(5.0, 5.0, 5.0, 10.0);
+  Cuboid cube = Cuboid(1.0, 1.0, 1.0, 10.0);
   Viewer viewer = Viewer(cube);
   viewer.initGlut(argc, argv);
 

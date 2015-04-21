@@ -8,7 +8,7 @@ class Cuboid : public Object {
     Cuboid(float x, float y, float z, float mass);
 
     virtual const glm::vec3 * verts() const { return verts_; }
-    virtual const glm::highp_ivec3 * tris() const { return tris_; }
+    virtual const unsigned int * tris() const { return tris_; }
     virtual int numverts() const { return NUM_VERTS; }
     virtual int numtris() const { return NUM_TRIS; }
 
@@ -16,10 +16,10 @@ class Cuboid : public Object {
     const static int NUM_VERTS = 8;
     const static int NUM_TRIS = 12;
     glm::vec3 verts_[NUM_VERTS];
-    glm::highp_ivec3 tris_[NUM_TRIS] = {
-      { 0, 1, 3 },  { 0, 3, 2 },  { 4, 0, 2},  { 4, 2, 6},
-      { 5, 4, 6 },  { 5, 6, 7 },  { 1, 5, 7},  { 1, 7, 3},
-      { 0, 4, 5 },  { 0, 5, 1 },  { 2, 3, 7},  { 2, 7, 6}
+    unsigned int tris_[3 * NUM_TRIS] = {
+      0, 3, 1,  0, 2, 3,  4, 2, 0,  4, 6, 2,
+      5, 6, 4,  5, 7, 6,  1, 7, 5,  1, 3, 7,
+      0, 5, 4,  0, 1, 5,  2, 7, 2,  2, 6, 7
     };
 
     void genverts(const float & x, const float & y, const float & z);
