@@ -13,7 +13,7 @@ class Viewer {
     static void display();
     static void reshape(int w, int h);
 
-  static Object * model_;
+  static std::vector<Object*> * models_;
 };
 
 #endif

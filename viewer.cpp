@@ -10,27 +10,29 @@
 #include "object.h"
 #include "viewer.h"
 
-Object * Viewer::model_;
+std::vector<Object*> * Viewer::models_;
 
 Viewer::Viewer() {}
 
 Viewer::Viewer(std::vector<Object*> & objects) {
-  model_ = objects[0];
+  models_ = &objects;
 }
 
 void Viewer::model() {
-  glEnableClientState(GL_VERTEX_ARRAY);
-  glEnableClientState(GL_COLOR_ARRAY);
+  for (int i = 0; i < models_->size(); i++) {
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
 
-  glVertexPointer(3, GL_FLOAT, 0, model_->verts());
-  glColorPointer(3, GL_FLOAT, 0, model_->verts());
+    glVertexPointer(3, GL_FLOAT, 0, (*models_)[i]->verts());
+    glColorPointer(3, GL_FLOAT, 0, (*models_)[i]->verts());
 
-  glPushMatrix();
-  glDrawElements(GL_TRIANGLES, 3 * model_->numtris(), GL_UNSIGNED_INT, model_->tris());
-  glPopMatrix();
+    glPushMatrix();
+    glDrawElements(GL_TRIANGLES, 3 * (*models_)[i]->numtris(), GL_UNSIGNED_INT, (*models_)[i]->tris());
+    glPopMatrix();
 
-  glDisableClientState(GL_VERTEX_ARRAY);
-  glDisableClientState(GL_COLOR_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+  }
 }
 
 void Viewer::display() {
