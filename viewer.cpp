@@ -1,11 +1,3 @@
-#include <cstdlib>
-#include <cstdio>
-#include <cstdarg>
-#include <cmath>
-#include <iostream>
-#include <random>
-#include <chrono>
-
 #define GL_GLEXT_PROTOTYPES
 #ifdef __APPLE__
 #include <GLUT/glut.h>
@@ -31,7 +23,7 @@ void Viewer::model() {
   glColorPointer(3, GL_FLOAT, 0, model_->verts());
 
   glPushMatrix();
-  glDrawElements(GL_TRIANGLES, model_->numtris(), GL_UNSIGNED_BYTE, model_->tris());
+  glDrawElements(GL_TRIANGLES, 3 * model_->numtris(), GL_UNSIGNED_BYTE, model_->tris());
   glPopMatrix();
 
   glDisableClientState(GL_VERTEX_ARRAY);
@@ -39,7 +31,7 @@ void Viewer::model() {
 }
 
 void Viewer::display() {
-  glClearColor(0.0,0.0,0.0,1.0);
+  glClearColor(255.0,255.0,255.0,1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity(); // Reset transformations
 
@@ -59,7 +51,7 @@ void Viewer::display() {
 
 void Viewer::reshape(int w, int h) {
   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
-  glMatrixMode (GL_PROJECTION);
+  glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 0.1, 200.0);
   glMatrixMode(GL_MODELVIEW);
@@ -80,7 +72,7 @@ void Viewer::initGlut(int argc, char * argv[]) {
 
   //  Enable Z-buffer depth test
   glClearDepth(1.0f);
-  glDepthFunc(GL_LEQUAL);
+  //glDepthFunc(GL_LEQUAL);
   glEnable(GL_DEPTH_TEST);
 
   // Callback functions
