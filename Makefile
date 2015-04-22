@@ -8,7 +8,7 @@ else
 	UNAME := $(shell uname)
 
 	ifeq ($(UNAME),Linux)
-		CCFLAGS += -lGL -lGLU -lglut -lgsl -lgslcblas -lm -std=gnu++11
+		CCFLAGS += -lGL -lGLU -lglut -std=gnu++11
 	endif
 
 	# Mac flags, don't yet include gsl
