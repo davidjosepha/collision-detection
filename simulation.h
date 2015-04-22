@@ -4,6 +4,7 @@
 #include "object.h"
 #include "viewer.h"
 #include "motionengine.h"
+#include "dummyengine.h"
 
 class Simulation {
   public:
@@ -12,6 +13,7 @@ class Simulation {
     std::vector<Object> objects;
     Viewer viewer;
     MotionEngine motionengine;
+    DummyEngine dummyengine;
     // need to add dummy physics engine
 };
 
