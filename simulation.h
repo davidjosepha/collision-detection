@@ -5,6 +5,7 @@
 #include "viewer.h"
 #include "motionengine.h"
 #include "dummyengine.h"
+#include "collisionevent.h"
 
 class Simulation {
   public:

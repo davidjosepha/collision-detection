@@ -1,5 +1,6 @@
 #ifndef MOTIONENGINE_H
 #define MOTIONENGINE_H
+#include "collisionevent.h"
 
 class MotionEngine {
   public:
