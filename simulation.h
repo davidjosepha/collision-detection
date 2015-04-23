@@ -11,11 +11,10 @@ class Simulation {
   public:
     Simulation();
   private:
-    std::vector<Object> objects;
+    std::vector<Object*> objects;
     Viewer viewer;
     MotionEngine motionengine;
     DummyEngine dummyengine;
-    // need to add dummy physics engine
 };
 
 
