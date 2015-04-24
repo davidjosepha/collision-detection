@@ -9,11 +9,12 @@ class Viewer {
     static void initGlut(int argc, char * argv[]);
 
   private:
-    static void model();
+    static void populateGlBuffers(float time);
     static void display();
     static void reshape(int w, int h);
 
     static DummyEngine * dummyengine_;
+    static float time_;
 };
 
 #endif

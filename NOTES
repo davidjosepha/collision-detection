@@ -11,3 +11,4 @@ void foo(int & x)   : foo takes an int passed to it by reference
 
 Object vector should be a vector of Object const * const
 Make sure everything that can be const is const
+Make method titles better
