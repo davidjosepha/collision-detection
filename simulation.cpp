@@ -10,24 +10,24 @@
 using namespace std;
 
 Simulation::Simulation() {
-  Cuboid scube = Cuboid(1.0, 1.0, 1.0, 10.0);
-  Cuboid lcube = Cuboid(2.0, 2.0, 2.0, 10.0);
+  Cuboid s_cube = Cuboid(1.0, 1.0, 1.0, 10.0);
+  Cuboid l_cube = Cuboid(2.0, 2.0, 2.0, 10.0);
 
   objects = std::vector<Object*>();
-  objects.push_back(&scube); // i = 0
-  objects.push_back(&lcube); // i = 1
+  objects.push_back(&s_cube); // i = 0
+  objects.push_back(&l_cube); // i = 1
 
-  std::vector<CollisionEvent> states = std::vector<CollisionEvent>();
-  CollisionEvent sevent = CollisionEvent(0, 0.0, glm::vec3(1.0f, 1.0f, 1.0f),
+  std::vector<CollisionEvent> events = std::vector<CollisionEvent>();
+  CollisionEvent s_event = CollisionEvent(0, 0.0, glm::vec3(1.0f, 1.0f, 1.0f),
                                          glm::vec3(0.0f, 0.0f, 1.0f), 1.0f,
                                          glm::vec3(0.0f, 1.0f, 0.0f),
                                          glm::vec3(0.05f, 0.0f, 0.0f), 0.0f);
-  states.push_back(sevent);
+  events.push_back(s_event);
 
   motionengine = MotionEngine();
 
-  dummyengine = DummyEngine(motionengine, states, objects);
+  dummyengine = DummyEngine(motionengine, events, objects);
 
-  Viewer viewer = Viewer(dummyengine, objects.size());
+  Viewer viewer = Viewer(dummyengine);
   viewer.initGlut(0, NULL);
 }

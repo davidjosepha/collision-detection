@@ -13,17 +13,16 @@
 #include "dummyengine.h"
 
 DummyEngine * Viewer::dummyengine_;
-int Viewer::numobjects_;
 
 Viewer::Viewer() {}
 
-Viewer::Viewer(DummyEngine & dummyengine, int numobjects) {
+Viewer::Viewer(DummyEngine & dummyengine) {
   dummyengine_ = &dummyengine;
-  numobjects_ = numobjects;
 }
 
 void Viewer::model() {
   State state = State();
+  int numobjects_ = dummyengine_->numObjects();
   for (int i = 0; i < numobjects_; i++) {
     dummyengine_->getState(i, 0.0, state);
     glEnableClientState(GL_VERTEX_ARRAY);

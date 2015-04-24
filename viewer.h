@@ -5,7 +5,7 @@
 class Viewer {
   public:
     Viewer();
-    Viewer(DummyEngine & dummyengine, int numobjects);
+    Viewer(DummyEngine & dummyengine);
     static void initGlut(int argc, char * argv[]);
 
   private:
@@ -14,7 +14,6 @@ class Viewer {
     static void reshape(int w, int h);
 
     static DummyEngine * dummyengine_;
-    static int numobjects_;
 };
 
 #endif
