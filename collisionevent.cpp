@@ -22,34 +22,34 @@ CollisionEvent::CollisionEvent(int object, double time,
   angular_velocity_ = angular_velocity;
 }
 
-int CollisionEvent::object() {
+int CollisionEvent::object() const {
   return object_;
 }
 
-float CollisionEvent::time() {
+float CollisionEvent::time() const {
   return time_;
 }
 
-glm::vec3 & CollisionEvent::initial_coordinates() {
+glm::vec3 const & CollisionEvent::initial_coordinates() const {
   return initial_coordinates_;
 }
 
-glm::vec3 & CollisionEvent::initial_axis() {
+glm::vec3 const & CollisionEvent::initial_axis() const {
   return initial_axis_;
 }
 
-float CollisionEvent::initial_angle() {
+float CollisionEvent::initial_angle() const {
   return initial_angle_;
 }
 
-glm::vec3 & CollisionEvent::axis_of_rotation() {
+glm::vec3 const & CollisionEvent::axis_of_rotation() const {
   return axis_of_rotation_;
 }
 
-glm::vec3 & CollisionEvent::velocity() {
+glm::vec3 const & CollisionEvent::velocity() const {
   return velocity_;
 }
 
-float CollisionEvent::angular_velocity() {
+float CollisionEvent::angular_velocity() const {
   return angular_velocity_;
 }
