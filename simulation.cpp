@@ -28,8 +28,6 @@ Simulation::Simulation() {
 
   dummyengine = DummyEngine(motionengine, states, objects);
 
-  Viewer viewer = Viewer(dummyengine);
+  Viewer viewer = Viewer(dummyengine, objects.size());
   viewer.initGlut(0, NULL);
-
-  printf("hey");
 }

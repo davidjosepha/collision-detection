@@ -13,18 +13,19 @@
 #include "dummyengine.h"
 
 DummyEngine * Viewer::dummyengine_;
+int Viewer::numobjects_;
 
 Viewer::Viewer() {}
 
-Viewer::Viewer(DummyEngine & dummyengine) {
+Viewer::Viewer(DummyEngine & dummyengine, int numobjects) {
   dummyengine_ = &dummyengine;
+  numobjects_ = numobjects;
 }
 
 void Viewer::model() {
   State state = State();
-  dummyengine_->getState(0, 0.0, state);
-  /*for (int i = 0; i < models_->size(); i++) {
-   */
+  for (int i = 0; i < numobjects_; i++) {
+    dummyengine_->getState(i, 0.0, state);
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
 
@@ -37,8 +38,7 @@ void Viewer::model() {
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
-    /*
-  }*/
+  }
 }
 
 void Viewer::display() {
