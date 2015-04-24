@@ -8,9 +8,10 @@ void Cuboid::genverts(const float & x, const float & y, const float & z) {
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 2; j++) {
       for (int k = 0; k < 2; k++) {
-        verts_[4*i + 2*j + k] = { x * (2.*i - 1.) / 2.,
-                                  y * (2.*j - 1.) / 2.,
-                                  z * (2.*k - 1.) / 2. };
+        verts_[4*i + 2*j + k] = { x * (2.0*i - 1.0) / 2.0,
+                                  y * (2.0*j - 1.0) / 2.0,
+                                  z * (2.0*k - 1.0) / 2.0,
+                                  1.0f };
       }
     }
   }

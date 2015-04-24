@@ -9,30 +9,36 @@
 #include <glm/glm.hpp>
 #include "object.h"
 #include "viewer.h"
+#include "state.h"
+#include "dummyengine.h"
 
-std::vector<Object*> * Viewer::models_;
+DummyEngine * Viewer::dummyengine_;
 
 Viewer::Viewer() {}
 
-Viewer::Viewer(std::vector<Object*> & objects) {
-  models_ = &objects;
+Viewer::Viewer(DummyEngine & dummyengine) {
+  dummyengine_ = &dummyengine;
 }
 
 void Viewer::model() {
-  for (int i = 0; i < models_->size(); i++) {
+  State state = State();
+  dummyengine_->getState(0, 0.0, state);
+  /*for (int i = 0; i < models_->size(); i++) {
+   */
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
 
-    glVertexPointer(3, GL_FLOAT, 0, (*models_)[i]->verts());
-    glColorPointer(3, GL_FLOAT, 0, (*models_)[i]->verts());
+    glVertexPointer(4, GL_FLOAT, 0, state.verts());
+    glColorPointer(4, GL_FLOAT, 0, state.verts());
 
     glPushMatrix();
-    glDrawElements(GL_TRIANGLES, 3 * (*models_)[i]->numtris(), GL_UNSIGNED_INT, (*models_)[i]->tris());
+    glDrawElements(GL_TRIANGLES, 3 * 12, GL_UNSIGNED_INT, state.tris());
     glPopMatrix();
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
-  }
+    /*
+  }*/
 }
 
 void Viewer::display() {

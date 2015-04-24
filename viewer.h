@@ -1,11 +1,11 @@
 #ifndef VIEWER_H
 #define VIEWER_H
+#include "dummyengine.h"
 
-//
 class Viewer {
   public:
     Viewer();
-    Viewer(std::vector<Object*> & objects);
+    Viewer(DummyEngine & dummyengine);
     static void initGlut(int argc, char * argv[]);
 
   private:
@@ -13,7 +13,7 @@ class Viewer {
     static void display();
     static void reshape(int w, int h);
 
-  static std::vector<Object*> * models_;
+    static DummyEngine * dummyengine_;
 };
 
 #endif
