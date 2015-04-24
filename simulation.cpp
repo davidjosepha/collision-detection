@@ -20,13 +20,23 @@ Simulation::Simulation() {
   std::vector<CollisionEvent> events = std::vector<CollisionEvent>();
   CollisionEvent s_event = CollisionEvent(0,                            // object id
                                           0.0,                          // time
-                                          glm::vec3(1.0f, 1.0f, 1.0f),  // initial_coordinates
+                                          glm::vec3(-1.0f, -1.0f, 0.0f),  // initial_coordinates
                                           glm::vec3(0.0f, 0.0f, 1.0f),  // initial_axis
                                           1.0f,                         // initial_angle
                                           glm::vec3(0.0f, 1.0f, 0.0f),  // axis_of_rotation
-                                          glm::vec3(0.05f, 0.0f, 0.0f), // velocity
+                                          glm::vec3(1.0f, 1.0f, 0.0f), // velocity
                                           1.0f);                        // angular_velocity
   events.push_back(s_event);
+
+  CollisionEvent l_event = CollisionEvent(0,                            // object id
+                                          0.0,                          // time
+                                          glm::vec3(-1.0f, 1.0f, 0.0f),  // initial_coordinates
+                                          glm::vec3(0.0f, 1.0f, 1.0f),  // initial_axis
+                                          1.0f,                         // initial_angle
+                                          glm::vec3(1.0f, 0.0f, 1.0f),  // axis_of_rotation
+                                          glm::vec3(1.0f, -1.0f, 0.0f), // velocity
+                                          1.0f);                        // angular_velocity
+  events.push_back(l_event);
 
   motionengine = MotionEngine();
 
