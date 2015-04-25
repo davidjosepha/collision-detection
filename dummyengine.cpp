@@ -21,10 +21,10 @@ void DummyEngine::getState(int object_id, float time, State & state) {
   state.setVerts(*(object->verts()));
   state.setTris(*(object->tris()));
 
-  motionengine_->pose((*events_)[object_id], time, *state.pose()); 
+  motionengine_->pose((*events_)[object_id], time, *state.pose());
   //state.setPose(pose);
 }
 
-int DummyEngine::numObjects() {
+int DummyEngine::numObjects() const {
   return objects_->size();
 }

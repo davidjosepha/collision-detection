@@ -13,7 +13,7 @@ class DummyEngine {
                 const std::vector<CollisionEvent> & states,
                 const std::vector<Object*> & objects);
     void getState(int object_id, float time, State & state);
-    int numObjects();
+    int numObjects() const;
   private:
     const std::vector<CollisionEvent> * events_;
     const std::vector<Object*> * objects_;

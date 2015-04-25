@@ -10,8 +10,8 @@ class State {
       tris_ = &tris;
       pose_ = &pose;
     }*/
-    const glm::vec4 * verts() { return verts_; }
-    const glm::highp_uvec3 * tris() { return tris_; }
+    const glm::vec4 * verts() const { return verts_; }
+    const glm::highp_uvec3 * tris() const { return tris_; }
     glm::mat4 * pose() { return &pose_; }
 
     void setVerts(const glm::vec4 & verts) { verts_ = &verts; }
@@ -20,7 +20,7 @@ class State {
   private:
     const glm::vec4 * verts_;
     const glm::highp_uvec3 * tris_;
-    glm::mat4 pose_; 
+    glm::mat4 pose_;
 };
 
 #endif
