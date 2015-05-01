@@ -12,3 +12,6 @@ void foo(int & x)   : foo takes an int passed to it by reference
 Object vector should be a vector of Object const * const
 Make sure everything that can be const is const
 Make method titles better
+
+
+If two edges intersect, the normal to the plane defined by the lines from the edges will be our normal vector
