@@ -30,24 +30,24 @@ float CollisionEvent::time() const {
   return time_;
 }
 
-glm::vec3 const & CollisionEvent::initial_coordinates() const {
-  return initial_coordinates_;
+glm::vec3 const * CollisionEvent::initial_coordinates() const {
+  return &initial_coordinates_;
 }
 
-glm::vec3 const & CollisionEvent::initial_axis() const {
-  return initial_axis_;
+glm::vec3 const * CollisionEvent::initial_axis() const {
+  return &initial_axis_;
 }
 
 float CollisionEvent::initial_angle() const {
   return initial_angle_;
 }
 
-glm::vec3 const & CollisionEvent::axis_of_rotation() const {
-  return axis_of_rotation_;
+glm::vec3 const * CollisionEvent::axis_of_rotation() const {
+  return &axis_of_rotation_;
 }
 
-glm::vec3 const & CollisionEvent::velocity() const {
-  return velocity_;
+glm::vec3 const * CollisionEvent::velocity() const {
+  return &velocity_;
 }
 
 float CollisionEvent::angular_velocity() const {

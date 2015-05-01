@@ -16,9 +16,9 @@ MotionEngine::MotionEngine() { }
 void MotionEngine::pose(CollisionEvent const & event, float time, glm::mat4 & pmat) {
   float dtime = time - event.time();
 
-  glm::mat4 irot = irotate(event.initial_angle(), event.initial_axis());
-  glm::mat4 trot = trotate(dtime, event.angular_velocity(), event.axis_of_rotation());
-  glm::mat4 trans = translate(dtime, event.initial_coordinates(), event.velocity());
+  glm::mat4 irot = irotate(event.initial_angle(), *(event.initial_axis()));
+  glm::mat4 trot = trotate(dtime, event.angular_velocity(), *(event.axis_of_rotation()));
+  glm::mat4 trans = translate(dtime, *(event.initial_coordinates()), *(event.velocity()));
 
   pmat = trans * trot * irot;
 }

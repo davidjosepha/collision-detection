@@ -15,12 +15,12 @@ class CollisionEvent {
 
     int object() const;
     float time() const;
-    glm::vec3 const & initial_coordinates() const;
-    glm::vec3 const & initial_axis() const;
+    glm::vec3 const * initial_coordinates() const;
+    glm::vec3 const * initial_axis() const;
     float initial_angle() const;
 
-    glm::vec3 const & velocity() const;
-    glm::vec3 const & axis_of_rotation() const;
+    glm::vec3 const * velocity() const;
+    glm::vec3 const * axis_of_rotation() const;
     float angular_velocity() const;
 
   private:
