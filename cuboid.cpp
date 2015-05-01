@@ -2,6 +2,7 @@
 
 Cuboid::Cuboid(float x, float y, float z, float mass) {
   genverts(x, y, z);      
+  mass_ = mass;
 }
 
 void Cuboid::genverts(const float & x, const float & y, const float & z) {

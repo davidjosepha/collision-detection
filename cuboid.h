@@ -11,6 +11,7 @@ class Cuboid : public Object {
     virtual const glm::highp_uvec3 * tris() const { return tris_; }
     virtual int numverts() const { return NUM_VERTS; }
     virtual int numtris() const { return NUM_TRIS; }
+    virtual int mass() const { return mass_; }
 
   private:
     const static int NUM_VERTS = 8;
@@ -21,6 +22,7 @@ class Cuboid : public Object {
       { 5, 6, 4 },  { 5, 7, 6 },  { 1, 7, 5 },  { 1, 3, 7 },
       { 0, 5, 4 },  { 0, 1, 5 },  { 2, 3, 7 },  { 2, 6, 7 }
     };
+    float mass_;
 
     void genverts(const float & x, const float & y, const float & z);
 };

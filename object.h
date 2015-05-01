@@ -8,6 +8,7 @@ class Object {
     virtual const glm::highp_uvec3 * tris() const = 0;
     virtual int numverts() const = 0;
     virtual int numtris() const = 0;
+    virtual int mass() const = 0;
 };
 
 #endif
