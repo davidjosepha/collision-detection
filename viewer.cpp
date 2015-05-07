@@ -29,11 +29,6 @@ void Viewer::populateGlBuffers(float time) {
   for (int i = 0; i < numobjects_; i++) {
     dummyengine_->getState(i, time, state);
     pose = state.pose();
-    //printf("==================\n");
-    //printf("%0.2f %0.2f %0.2f %0.2f\n", (*pose)[0][0], (*pose)[1][0], (*pose)[2][0], (*pose)[3][0]);
-    //printf("%0.2f %0.2f %0.2f %0.2f\n", (*pose)[0][1], (*pose)[1][1], (*pose)[2][1], (*pose)[3][1]);
-    //printf("%0.2f %0.2f %0.2f %0.2f\n", (*pose)[0][2], (*pose)[1][2], (*pose)[2][2], (*pose)[3][2]);
-    //printf("%0.2f %0.2f %0.2f %0.2f\n", (*pose)[0][3], (*pose)[1][3], (*pose)[2][3], (*pose)[3][3]);
 
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);

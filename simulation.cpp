@@ -17,7 +17,7 @@ Simulation::Simulation() {
   objects.push_back(&s_cube); // i = 0
   objects.push_back(&l_cube); // i = 1
 
-  std::vector<CollisionEvent> events = std::vector<CollisionEvent>();
+  //std::vector<CollisionEvent> events = std::vector<CollisionEvent>();
   dummyengine = DummyEngine(motionengine, objects);
 
   Viewer viewer = Viewer(dummyengine);

@@ -31,6 +31,8 @@ glm::mat4 MotionEngine::trotate(float dtime, float angle, glm::vec3 const & axis
   return glm::rotate(dtime * angle, axis);
 }
 
-glm::mat4 MotionEngine::translate(float dtime, glm::vec3 const & coordinates, glm::vec3 const & velocity) const {
+glm::mat4 MotionEngine::translate(float dtime,
+                                         glm::vec3 const & coordinates,
+                                         glm::vec3 const & velocity) const {
   return glm::translate(coordinates + dtime * velocity);
 }

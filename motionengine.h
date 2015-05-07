@@ -10,7 +10,9 @@ class MotionEngine {
   private:
     glm::mat4 irotate(float angle, glm::vec3 const & axis) const;
     glm::mat4 trotate(float dtime, float angle, glm::vec3 const & axis) const;
-    glm::mat4 translate(float dtime, glm::vec3 const & coordinates, glm::vec3 const & velocity) const;
+    glm::mat4 translate(float dtime,
+                        glm::vec3 const & coordinates,
+                        glm::vec3 const & velocity) const;
 };
 
 #endif

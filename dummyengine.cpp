@@ -27,7 +27,7 @@ DummyEngine::DummyEngine(MotionEngine & motionengine,
 }
 
 void DummyEngine::getState(int object_id, float time, State & state) {
-  while (time > event_queue_.front().time()) {
+  while (event_queue_.size() > 0 && time > event_queue_.front().time()) {
     CollisionEvent & col = event_queue_.front();
     event_queue_.pop();
     last_events_[col.object()] = col;
@@ -38,7 +38,6 @@ void DummyEngine::getState(int object_id, float time, State & state) {
   state.setTris(*(object->tris()));
 
   motionengine_->pose(last_events_[object_id], time, *state.pose());
-  //state.setPose(pose);
 }
 
 int DummyEngine::numObjects() const {
