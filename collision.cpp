@@ -1,4 +1,5 @@
 #include "collision.h"
+#include <cstdio>
 #include <vector>
 #include <glm/glm.hpp>
 #include "collisionevent.h"
@@ -35,11 +36,12 @@ void Collision::generateCollisionEvents(int obj_a,
                    time_,
                    (time_ - icol_a.time()) * *icol_a.velocity()
                       + *icol_a.initial_coordinates(),
-                   *fcol_a.initial_axis(),
-                   fcol_a.initial_angle(),
-                   *fcol_a.axis_of_rotation(),
-                   (-1.0f) * *fcol_a.velocity(),
+                   *icol_a.initial_axis(),
+                   icol_a.initial_angle(),
+                   *icol_a.axis_of_rotation(),
+                   (float)(((int)time_ % 2 == 1) * 2 - 1) * *icol_a.velocity(),
                    icol_a.angular_velocity());
+  return;
   /////////////
   
   float inertia_a;// = momentOfInertia(NULL, obj_a);

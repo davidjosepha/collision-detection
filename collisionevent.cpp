@@ -6,6 +6,8 @@
 #include <glm/glm.hpp>
 #include "collisionevent.h"
 
+CollisionEvent::CollisionEvent() { }
+
 CollisionEvent::CollisionEvent(int object,
                                double time,
                                glm::vec3 initial_coordinates,

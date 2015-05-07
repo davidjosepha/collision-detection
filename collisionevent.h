@@ -4,6 +4,7 @@
 
 class CollisionEvent {
   public:
+    CollisionEvent();
     CollisionEvent(int object,
                    double time,
                    glm::vec3 initial_coordinates,
