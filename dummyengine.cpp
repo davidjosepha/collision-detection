@@ -43,3 +43,7 @@ void DummyEngine::getState(int object_id, float time, State & state) {
 int DummyEngine::numObjects() const {
   return objects_->size();
 }
+
+void DummyEngine::pushEvent(CollisionEvent const & col) {
+  event_queue_.push(col); 
+}

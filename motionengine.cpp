@@ -1,5 +1,4 @@
 #include <cstdlib>
-#include <cstdio>
 #include <cmath>
 #include <iostream>
 #ifdef __APPLE__
