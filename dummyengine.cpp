@@ -26,21 +26,6 @@ DummyEngine::DummyEngine(MotionEngine & motionengine,
   }
 }
 
-void DummyEngine::generateRandomEvents(int number) {
-  for (float t = 0.0; t < number; t++) {
-    for(int i = 0; i < objects_->size(); i++) {
-      event_queue_.push(CollisionEvent(i,                       // object id
-                                       t,                          // time
-                                       glm::vec3(0.0f, 0.0f, 0.0f),  // initial_coordinates
-                                       glm::vec3(0.0f, 0.0f, 1.0f),  // initial_axis
-                                       0.0f,                         // initial_angle
-                                       glm::vec3(1.0f, 0.0f, 0.0f),  // axis_of_rotation
-                                       glm::vec3(0.0f, t, 0.0f),  // velocity
-                                       t));                       // angular_velocity
-    }
-  }
-}
-
 void DummyEngine::getState(int object_id, float time, State & state) {
   while (event_queue_.size() > 0 && time > event_queue_.front().time()) {
     CollisionEvent & col = event_queue_.front();
