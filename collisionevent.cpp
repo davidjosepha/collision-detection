@@ -6,11 +6,33 @@
 #include <glm/glm.hpp>
 #include "collisionevent.h"
 
-CollisionEvent::CollisionEvent(int object, double time,
-                        glm::vec3 initial_coordinates, glm::vec3 initial_axis,
-                        float initial_angle,
-                        glm::vec3 axis_of_rotation, glm::vec3 velocity,
-                        float angular_velocity) {
+CollisionEvent::CollisionEvent(int object,
+                               double time,
+                               glm::vec3 initial_coordinates,
+                               glm::vec3 initial_axis,
+                               float initial_angle,
+                               glm::vec3 axis_of_rotation,
+                               glm::vec3 velocity,
+                               float angular_velocity) {
+  object_ = object;
+  time_ = time;
+  initial_coordinates_ = initial_coordinates;
+  initial_axis_ = initial_axis;
+  initial_angle_ = initial_angle;
+
+  axis_of_rotation_ = axis_of_rotation;
+  velocity_ = velocity;
+  angular_velocity_ = angular_velocity;
+}
+
+void CollisionEvent::setValues(int object,
+                               double time,
+                               glm::vec3 initial_coordinates,
+                               glm::vec3 initial_axis,
+                               float initial_angle,
+                               glm::vec3 axis_of_rotation,
+                               glm::vec3 velocity,
+                               float angular_velocity) {
   object_ = object;
   time_ = time;
   initial_coordinates_ = initial_coordinates;

@@ -6,10 +6,19 @@ class CollisionEvent {
   public:
     CollisionEvent(int object,
                    double time,
-                   glm::vec3 initial_coordinates_,
+                   glm::vec3 initial_coordinates,
                    glm::vec3 initial_axis,
                    float initial_angle,
-                   glm::vec3 axis_of_rotation_,
+                   glm::vec3 axis_of_rotation,
+                   glm::vec3 velocity,
+                   float angular_velocity);
+
+    void setValues(int object,
+                   double time,
+                   glm::vec3 initial_coordinates,
+                   glm::vec3 initial_axis,
+                   float initial_angle,
+                   glm::vec3 axis_of_rotation,
                    glm::vec3 velocity,
                    float angular_velocity);
 

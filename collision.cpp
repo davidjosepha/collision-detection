@@ -30,6 +30,17 @@ void Collision::generateCollisionEvents(int obj_a,
                                         CollisionEvent const & icol_b,
                                         CollisionEvent & fcol_a,
                                         CollisionEvent & fcol_b) const {
+  /////////////
+  fcol_a.setValues(obj_a,
+                   time_,
+                   (time_ - icol_a.time()) * *icol_a.velocity()
+                      + *icol_a.initial_coordinates(),
+                   *fcol_a.initial_axis(),
+                   fcol_a.initial_angle(),
+                   *fcol_a.axis_of_rotation(),
+                   (-1.0f) * *fcol_a.velocity(),
+                   icol_a.angular_velocity());
+  /////////////
   
   float inertia_a;// = momentOfInertia(NULL, obj_a);
   float inertia_b;// = momentOfInertia(NULL, obj_b);
