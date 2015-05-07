@@ -38,7 +38,6 @@ Simulation::Simulation() {
 
   //std::vector<CollisionEvent> events = std::vector<CollisionEvent>();
   dummyengine = DummyEngine(motionengine, objects);
-  dummyengine.generateRandomEvents(10);
   //dummyengine.pushEvent(s_event);
   //dummyengine.pushEvent(l_event);
 
