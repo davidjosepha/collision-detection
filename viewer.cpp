@@ -52,11 +52,11 @@ void Viewer::display() {
   glLoadIdentity(); // Reset transformations
 
   // default camera position
-  glTranslatef(0., 0., -3.);
+  glTranslatef(0., 0., -10.);
 
   // default to showing the borders of triangles
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
   glEnable(GL_DEPTH_TEST); //enable the depth testing
   
