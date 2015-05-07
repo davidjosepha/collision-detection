@@ -12,6 +12,7 @@ class DummyEngine {
     DummyEngine();
     DummyEngine(MotionEngine & motionengine,
                 std::vector<Object*> const & objects);
+    void generateRandomEvents(int number);
     void getState(int object_id, float time, State & state);
     int numObjects() const;
     void pushEvent(CollisionEvent const & col);

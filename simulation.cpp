@@ -38,8 +38,9 @@ Simulation::Simulation() {
 
   //std::vector<CollisionEvent> events = std::vector<CollisionEvent>();
   dummyengine = DummyEngine(motionengine, objects);
-  dummyengine.pushEvent(s_event);
-  dummyengine.pushEvent(l_event);
+  dummyengine.generateRandomEvents(10);
+  //dummyengine.pushEvent(s_event);
+  //dummyengine.pushEvent(l_event);
 
   Viewer viewer = Viewer(dummyengine);
   viewer.initGlut(0, NULL);

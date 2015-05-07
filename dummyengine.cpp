@@ -20,9 +20,24 @@ DummyEngine::DummyEngine(MotionEngine & motionengine,
                                      glm::vec3(0.0f, 0.0f, 0.0f),  // initial_coordinates
                                      glm::vec3(0.0f, 0.0f, 1.0f),  // initial_axis
                                      0.0f,                         // initial_angle
-                                     glm::vec3(0.0f, 0.0f, 0.0f),  // axis_of_rotation
+                                     glm::vec3(1.0f, 0.0f, 0.0f),  // axis_of_rotation
                                      glm::vec3(0.0f, 0.0f, 0.0f),  // velocity
                                      0.0f));                       // angular_velocity
+  }
+}
+
+void DummyEngine::generateRandomEvents(int number) {
+  for (float t = 0.0; t < number; t++) {
+    for(int i = 0; i < objects_->size(); i++) {
+      event_queue_.push(CollisionEvent(i,                       // object id
+                                       t,                          // time
+                                       glm::vec3(0.0f, 0.0f, 0.0f),  // initial_coordinates
+                                       glm::vec3(0.0f, 0.0f, 1.0f),  // initial_axis
+                                       0.0f,                         // initial_angle
+                                       glm::vec3(1.0f, 0.0f, 0.0f),  // axis_of_rotation
+                                       glm::vec3(0.0f, t, 0.0f),  // velocity
+                                       t));                       // angular_velocity
+    }
   }
 }
 
