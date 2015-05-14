@@ -9,6 +9,7 @@ class Object {
     virtual int numverts() const = 0;
     virtual int numtris() const = 0;
     virtual int mass() const = 0;
+    virtual float inertia(glm::vec3 const & axis) const = 0;
 };
 
 #endif

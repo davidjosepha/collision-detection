@@ -1,5 +1,7 @@
 #include "collision.h"
 #include <cstdio>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtx/vector_angle.hpp>
 #include <vector>
 #include <glm/glm.hpp>
 #include "collisionevent.h"
@@ -89,7 +91,7 @@ void Collision::normalToEdge(glm::vec3 & normal) const {
 }
 
 float Collision::momentOfInertia(glm::vec3 const & axis, int obj) const {
-  // DO SHIT
+  return (*objects_)[obj]->inertia(axis);
 }
 
 void Collision::finalVelocity(glm::vec3 const & initial_velocity,

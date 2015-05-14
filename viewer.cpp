@@ -52,7 +52,7 @@ void Viewer::display() {
   glLoadIdentity(); // Reset transformations
 
   // default camera position
-  glTranslatef(0., 0., -4.);
+  glTranslatef(0., 0., -10.);
 
   // default to showing the borders of triangles
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -75,7 +75,7 @@ void Viewer::reshape(int w, int h) {
   glViewport (0, 0, (GLsizei) w, (GLsizei) h);
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
-  gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 0.1, 200.0);
+  gluPerspective(30.0, (GLfloat) w/(GLfloat) h, 0.1, 200.0);
   glMatrixMode(GL_MODELVIEW);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
