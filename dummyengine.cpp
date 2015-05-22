@@ -41,9 +41,9 @@ DummyEngine::DummyEngine(MotionEngine & motionengine,
 
 void DummyEngine::randomEvent(int object_id) {
   int i = object_id;
-  Collision collision = Collision(last_events_[i].time() + 1, glm::vec3(0.0f, 0.0f, 0.0f), *objects_, i, i, last_events_[i], last_events_[i]);
+  Collision collision = Collision(*objects_);
   CollisionEvent newcol;
-  collision.generateCollisionEvents(i, i, last_events_[i], last_events_[i], newcol, newcol);
+  collision.generateCollisionEvents(last_events_[i].time() + 1, glm::vec3(0.0f, 0.0f, 0.0f), i, i, last_events_[i], last_events_[i], newcol, newcol);
   event_queue_.push(newcol);
 }
 

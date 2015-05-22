@@ -8,48 +8,51 @@
 class Collision {
   public:
     Collision();
-    Collision(float time,
-              glm::vec3 const & point,
-              std::vector<Object*> const & objects,
-              int obj_a,
-              int obj_b,
-              CollisionEvent const & icol_a,
-              CollisionEvent const & icol_b);
+    Collision(std::vector<Object*> const & objects);
 
-    void generateCollisionEvents(int obj_a,
-                                 int obj_b,
-                                 CollisionEvent const & icol_a,
-                                 CollisionEvent const & icol_b,
-                                 CollisionEvent & fcol_a,
-                                 CollisionEvent & fcol_b) const;
+    void generateCollisionEvents(float time,
+                                 glm::vec3 const & point,
+                                 int object_a,
+                                 int object_b,
+                                 CollisionEvent const & initial_collision_a,
+                                 CollisionEvent const & initial_collision_b,
+                                 CollisionEvent & final_collision_a,
+                                 CollisionEvent & final_collision_b) const;
+
   private:
-    void relativePoint(CollisionEvent const & col, glm::vec3 & rpoint) const;
-    void velocityAtPoint(CollisionEvent const & col, glm::vec3 & velocity) const;
-    void normalToEdge(glm::vec3 & normal) const;
-    float momentOfInertia(glm::vec3 const & axis, int obj) const;
-    void finalVelocity(glm::vec3 const & initial_velocity,
-                       float impulse_param,
-                       glm::vec3 const & normal,
-                       float mass,
-                       glm::vec3 & final_velocity) const;
-    void finalAngularVelocity(glm::vec3 const & initial_rotational_velocity,
-                              glm::vec3 const & rpoint,
-                              float impulse_param,
-                              glm::vec3 const & normal,
-                              float inertia,
-                              glm::vec3 & final_rotational_velocity) const;
-    float impulseParam(float elasticity,
-                       glm::vec3 const & impact_velocity,
-                       glm::vec3 const & normal,
-                       float mass_a,
-                       float mass_b,
-                       glm::vec3 const & rpoint_a,
-                       glm::vec3 const & rpoint_b,
-                       float inertia_a,
-                       float inertia_b) const;
+    Object const * object(int object_id) const;
 
-    float time_;
-    glm::vec3 const * point_;
+    void linearVelocity(float impulse_parameter,
+                        glm::vec3 const & normal,
+                        float mass,
+                        CollisionEvent const & initial_collision,
+                        CollisionEvent & final_collision) const;
+
+    void angularVelocity(float impulse_parameter,
+                         glm::vec3 const & normal,
+                         glm::vec3 const & radius,
+                         float moment_of_inertia,
+                         CollisionEvent const & initial_collision,
+                         CollisionEvent & final_collision) const;
+
+    void normalToEdge(glm::vec3 & normal) const;
+
+    void radiusAtPoint(float time, glm::vec3 const & point, CollisionEvent const & collision, glm::vec3 & radius) const;
+
+    float momentOfInertia(int object_id, glm::vec3 const & axis) const;
+
+    void velocityAtPoint(float time, glm::vec3 const & point, CollisionEvent const & collision, glm::vec3 & velocity) const;
+
+    float impulseParameter(float elasticity,
+                           glm::vec3 const & impact_velocity,
+                           glm::vec3 const & normal,
+                           float mass_a,
+                           float mass_b,
+                           glm::vec3 const & radius_a,
+                           glm::vec3 const & radius_b,
+                           float moment_of_inertia_a,
+                           float moment_of_inertia_b) const;
+
     std::vector<Object*> const * objects_;
 };
 
