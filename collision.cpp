@@ -54,29 +54,43 @@ void Collision::generateCollisionEvents(float time,
                            moment_of_inertia_a,
                            moment_of_inertia_b);
 
-  linearVelocity(impulse_parameter,
-                 normal,
-                 mass_a,
-                 initial_collision_a,
-                 final_collision_a);
+  final_collision_a.setObjectId(object_a);
+  final_collision_a.setTime(time);
+  glm::vec3 coordinates_a;
+  coordinatesAtTime(time, initial_collision_a, coordinates_a);
+  final_collision_a.setInitialCoordinates(coordinates_a);
+  // initial axis
+  // initial angle
   angularVelocity(impulse_parameter,
                   normal,
                   radius_a,
                   moment_of_inertia_a,
                   initial_collision_a,
                   final_collision_a);
-
   linearVelocity(impulse_parameter,
                  normal,
-                 mass_b,
-                 initial_collision_b,
-                 final_collision_b);
+                 mass_a,
+                 initial_collision_a,
+                 final_collision_a);
+
+  final_collision_b.setObjectId(object_b);
+  final_collision_b.setTime(time);
+  glm::vec3 coordinates_b;
+  coordinatesAtTime(time, initial_collision_b, coordinates_b);
+  final_collision_b.setInitialCoordinates(coordinates_b);
+  // initial axis
+  // initial angle
   angularVelocity(impulse_parameter,
                   normal,
                   radius_b,
                   moment_of_inertia_b,
                   initial_collision_b,
                   final_collision_b);
+  linearVelocity(impulse_parameter,
+                 normal,
+                 mass_b,
+                 initial_collision_b,
+                 final_collision_b);
 }
 
 Object const * Collision::object(int object_id) const {
@@ -157,6 +171,11 @@ void Collision::angularVelocity(float impulse_parameter,
 void Collision::normalToEdge(glm::vec3 & normal) const {
   // TODO stuff
 }
+
+void Collision::coordinatesAtTime(float time, CollisionEvent const & collision, glm::vec3 & coordinates) const {
+  float dtime = time - collision.time();
+  coordinates = *collision.initial_coordinates() + dtime * *collision.velocity();
+}
   
 void Collision::velocityAtPoint(float time, glm::vec3 const & point, CollisionEvent const & collision, glm::vec3 & velocity) const {
   glm::vec3 radius;
@@ -166,8 +185,9 @@ void Collision::velocityAtPoint(float time, glm::vec3 const & point, CollisionEv
 }
 
 void Collision::radiusAtPoint(float time, glm::vec3 const & point, CollisionEvent const & collision, glm::vec3 & radius) const {
-  float dtime = time - collision.time();
-  radius = point - (*collision.initial_coordinates() + dtime * *collision.velocity());
+  glm::vec3 coordinates;
+  coordinatesAtTime(time, collision, coordinates);
+  radius = point - coordinates;
 }
 
 float Collision::momentOfInertia(int object_id, glm::vec3 const & axis) const {

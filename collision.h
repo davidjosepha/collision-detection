@@ -37,6 +37,8 @@ class Collision {
 
     void normalToEdge(glm::vec3 & normal) const;
 
+    void coordinatesAtTime(float time, CollisionEvent const & collision, glm::vec3 & coordinates) const;
+
     void radiusAtPoint(float time, glm::vec3 const & point, CollisionEvent const & collision, glm::vec3 & radius) const;
 
     float momentOfInertia(int object_id, glm::vec3 const & axis) const;
