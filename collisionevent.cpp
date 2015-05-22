@@ -9,7 +9,7 @@
 CollisionEvent::CollisionEvent() { }
 
 CollisionEvent::CollisionEvent(int object,
-                               double time,
+                               float time,
                                glm::vec3 initial_coordinates,
                                glm::vec3 initial_axis,
                                float initial_angle,
@@ -28,7 +28,7 @@ CollisionEvent::CollisionEvent(int object,
 }
 
 void CollisionEvent::setValues(int object,
-                               double time,
+                               float time,
                                glm::vec3 initial_coordinates,
                                glm::vec3 initial_axis,
                                float initial_angle,

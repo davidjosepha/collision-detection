@@ -167,21 +167,6 @@ float Collision::momentOfInertia(int object_id, glm::vec3 const & axis) const {
   return (*objects_)[object_id]->inertia(axis);
 }
 
-//void Collision::finalVelocity(glm::vec3 const & initial_velocity,
-//                   float impulse_param,
-//                   glm::vec3 const & normal,
-//                   float mass,
-//                   glm::vec3 & final_velocity) const {
-//}
-//
-//void Collision::finalAngularVelocity(glm::vec3 const & initial_rotational_velocity,
-//                          glm::vec3 const & rpoint,
-//                          float impulse_param,
-//                          glm::vec3 const & normal,
-//                          float inertia,
-//                          glm::vec3 & final_rotational_velocity) const {
-//}
-
 float Collision::impulseParameter(float elasticity,
                                   glm::vec3 const & impact_velocity,
                                   glm::vec3 const & normal,
