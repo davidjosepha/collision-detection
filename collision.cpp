@@ -1,9 +1,10 @@
 #include "collision.h"
 #include <cstdio>
+#include <glm/gtx/norm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/vector_angle.hpp>
-#include <vector>
 #include <glm/glm.hpp>
+#include <vector>
 #include "collisionevent.h"
 #include "object.h"
 #define ELASTICITY 1.0
@@ -87,7 +88,8 @@ void Collision::linearVelocity(float impulse_parameter,
                                float mass,
                                CollisionEvent const & initial_collision,
                                CollisionEvent & final_collision) const {
-  //final_velocity = initial_velocity + impulse_param * normal / mass;
+  glm::vec3 linear_velocity = *initial_collision.velocity() + impulse_parameter * normal / mass;
+  final_collision.setVelocity(linear_velocity);
 }
 
 void Collision::angularVelocity(float impulse_parameter,
@@ -96,8 +98,13 @@ void Collision::angularVelocity(float impulse_parameter,
                                 float moment_of_inertia,
                                 CollisionEvent const & initial_collision,
                                 CollisionEvent & final_collision) const {
-//  final_rotational_velocity = initial_rotational_velocity
-//                              + glm::cross(rpoint, impulse_param * normal) / inertia;
+  // axis is a unit vector!!
+  glm::vec3 initial_omega = *initial_collision.axis_of_rotation() * initial_collision.angular_velocity();
+  glm::vec3 final_omega = initial_omega
+                          + glm::cross(radius, impulse_parameter * normal) / moment_of_inertia;
+
+  final_collision.setAxisOfRotation(glm::normalize(final_omega));
+  final_collision.setAngularVelocity(glm::length(final_omega));
 }
 
 //void Collision::generateCollisionEvents(int obj_a,
