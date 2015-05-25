@@ -35,15 +35,35 @@ class Collision {
                          CollisionEvent const & initial_collision,
                          CollisionEvent & final_collision) const;
 
-    void normalToEdge(glm::vec3 & normal) const;
+    void axisAngle(float dtime,
+                          float initial_angle,
+                          glm::vec3 const & initial_axis,
+                          float angular_velocity,
+                          glm::vec3 const & axis_of_rotation,
+                          CollisionEvent & final_collision) const;
 
-    void coordinatesAtTime(float time, CollisionEvent const & collision, glm::vec3 & coordinates) const;
+    void normalToEdge(glm::vec3 const & relative_point,
+                      float dtime,
+                      int object_id,
+                      CollisionEvent const & collision,
+                      glm::vec3 & normal) const;
 
-    void radiusAtPoint(float time, glm::vec3 const & point, CollisionEvent const & collision, glm::vec3 & radius) const;
+    void coordinatesAtTime(float dtime,
+                           CollisionEvent const & collision,
+                           glm::vec3 & coordinates) const;
 
-    float momentOfInertia(int object_id, glm::vec3 const & axis) const;
+    void radiusAtPoint(float dtime,
+                       glm::vec3 const & point,
+                       CollisionEvent const & collision,
+                       glm::vec3 & radius) const;
 
-    void velocityAtPoint(float time, glm::vec3 const & point, CollisionEvent const & collision, glm::vec3 & velocity) const;
+    float momentOfInertia(int object_id,
+                          glm::vec3 const & axis) const;
+
+    void velocityAtPoint(float dtime,
+                         glm::vec3 const & point,
+                         CollisionEvent const & collision,
+                         glm::vec3 & velocity) const;
 
     float impulseParameter(float elasticity,
                            glm::vec3 const & impact_velocity,

@@ -14,6 +14,7 @@ class Cuboid : public Object {
     virtual int numtris() const { return NUM_TRIS; }
     virtual int mass() const { return mass_; }
     virtual float inertia(glm::vec3 const & axis) const;
+    virtual void normalToEdge(glm::vec3 const & point, glm::vec3 & normal) const;
 
   private:
     const static int NUM_VERTS = 8;

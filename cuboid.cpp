@@ -29,6 +29,17 @@ float Cuboid::inertia(glm::vec3 const & axis) const {
   return sphere_[closest];
 }
 
+void Cuboid::normalToEdge(glm::vec3 const & point, glm::vec3 & normal) const {
+  int side = 0;
+  for (int i = 1; i < 3; i++) {
+    if (fabs(point[i]) > fabs(point[side])) {
+      side = i;
+    }
+  }
+  normal = { 0.0, 0.0, 0.0 };
+  normal[side] = point[side] / fabs(point[side]);
+}
+
 void Cuboid::genverts(float x, float y, float z) {
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 2; j++) {

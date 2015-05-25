@@ -1,5 +1,6 @@
 #include "collision.h"
 #include <cstdio>
+#include <glm/gtx/matrix_interpolation.hpp>
 #include <glm/gtx/norm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtx/vector_angle.hpp>
@@ -13,11 +14,6 @@ Collision::Collision() { }
 
 Collision::Collision(std::vector<Object*> const & objects) {
   objects_ = &objects;
-
-  //int obj_a_ = obj_a;
-  //int obj_b_ = obj_b;
-  //CollisionEvent const * icol_a_ = &icol_a;
-  //CollisionEvent const * icol_b_ = &icol_b;
 }
 
 void Collision::generateCollisionEvents(float time,
@@ -28,39 +24,63 @@ void Collision::generateCollisionEvents(float time,
                                         CollisionEvent const & initial_collision_b,
                                         CollisionEvent & final_collision_a,
                                         CollisionEvent & final_collision_b) const {
-  glm::vec3 normal;
-  normalToEdge(normal);
-
-  glm::vec3 impact_velocity; // TODO
-
+  float dtime_a = time - initial_collision_a.time();
   float mass_a = object(object_a)->mass();
   glm::vec3 radius_a;
-  radiusAtPoint(time, point, initial_collision_a, radius_a);
+  radiusAtPoint(dtime_a, point, initial_collision_a, radius_a);
   float moment_of_inertia_a = momentOfInertia(object_a, *initial_collision_a.axis_of_rotation());
 
+  float dtime_b = time - initial_collision_a.time();
   float mass_b = object(object_b)->mass();
   glm::vec3 radius_b;
-  radiusAtPoint(time, point, initial_collision_b, radius_b);
+  radiusAtPoint(dtime_b, point, initial_collision_b, radius_b);
   float moment_of_inertia_b = momentOfInertia(object_b, *initial_collision_b.axis_of_rotation());
 
-  float impulse_parameter
-        = impulseParameter(ELASTICITY,
-                           impact_velocity,
-                           normal,
-                           mass_a,
-                           mass_b,
-                           radius_a,
-                           radius_b,
-                           moment_of_inertia_a,
-                           moment_of_inertia_b);
+  glm::vec3 velocity_a;
+  velocityAtPoint(dtime_a, point, initial_collision_a, velocity_a);
+  glm::vec3 velocity_b;
+  velocityAtPoint(dtime_b, point, initial_collision_b, velocity_b);
+  glm::vec3 impact_velocity = velocity_a - velocity_b;
 
   final_collision_a.setObjectId(object_a);
   final_collision_a.setTime(time);
   glm::vec3 coordinates_a;
-  coordinatesAtTime(time, initial_collision_a, coordinates_a);
+  coordinatesAtTime(dtime_a, initial_collision_a, coordinates_a);
   final_collision_a.setInitialCoordinates(coordinates_a);
-  // initial axis
-  // initial angle
+
+  final_collision_b.setObjectId(object_b);
+  final_collision_b.setTime(time);
+  glm::vec3 coordinates_b;
+  coordinatesAtTime(dtime_b, initial_collision_b, coordinates_b);
+  final_collision_b.setInitialCoordinates(coordinates_b);
+
+  axisAngle(dtime_a,
+            initial_collision_a.initial_angle(),
+            *initial_collision_a.initial_axis(),
+            initial_collision_a.angular_velocity(),
+            *initial_collision_a.axis_of_rotation(),
+            final_collision_a);
+
+  axisAngle(dtime_b,
+            initial_collision_b.initial_angle(),
+            *initial_collision_b.initial_axis(),
+            initial_collision_b.angular_velocity(),
+            *initial_collision_b.axis_of_rotation(),
+            final_collision_b);
+
+  glm::vec3 normal;
+  normalToEdge(point - coordinates_b, dtime_b, object_b, initial_collision_b, normal);
+
+  float impulse_parameter = impulseParameter(ELASTICITY,
+                                             impact_velocity,
+                                             normal,
+                                             mass_a,
+                                             mass_b,
+                                             radius_a,
+                                             radius_b,
+                                             moment_of_inertia_a,
+                                             moment_of_inertia_b);
+
   angularVelocity(impulse_parameter,
                   normal,
                   radius_a,
@@ -73,13 +93,6 @@ void Collision::generateCollisionEvents(float time,
                  initial_collision_a,
                  final_collision_a);
 
-  final_collision_b.setObjectId(object_b);
-  final_collision_b.setTime(time);
-  glm::vec3 coordinates_b;
-  coordinatesAtTime(time, initial_collision_b, coordinates_b);
-  final_collision_b.setInitialCoordinates(coordinates_b);
-  // initial axis
-  // initial angle
   angularVelocity(impulse_parameter,
                   normal,
                   radius_b,
@@ -95,6 +108,24 @@ void Collision::generateCollisionEvents(float time,
 
 Object const * Collision::object(int object_id) const {
   return (*objects_)[object_id];
+}
+
+void Collision::axisAngle(float dtime,
+                          float initial_angle,
+                          glm::vec3 const & initial_axis,
+                          float angular_velocity,
+                          glm::vec3 const & axis_of_rotation,
+                          CollisionEvent & final_collision) const {
+  glm::mat4 irot = glm::rotate(initial_angle, initial_axis);
+  glm::mat4 trot = glm::rotate(dtime * angular_velocity, axis_of_rotation);
+  glm::mat4 rot = trot * irot;
+
+  float final_angle;
+  glm::vec3 final_axis;
+  glm::axisAngle(rot, final_axis, final_angle);
+
+  final_collision.setInitialAxis(final_axis);
+  final_collision.setInitialAngle(final_angle);
 }
 
 void Collision::linearVelocity(float impulse_parameter,
@@ -121,72 +152,44 @@ void Collision::angularVelocity(float impulse_parameter,
   final_collision.setAngularVelocity(glm::length(final_omega));
 }
 
-//void Collision::generateCollisionEvents(int obj_a,
-//                                        int obj_b,
-//                                        CollisionEvent const & icol_a,
-//                                        CollisionEvent const & icol_b,
-//                                        CollisionEvent & fcol_a,
-//                                        CollisionEvent & fcol_b) const {
-//  /////////////
-//  fcol_a.setValues(obj_a,
-//                   time_,
-//                   (time_ - icol_a.time()) * *icol_a.velocity()
-//                      + *icol_a.initial_coordinates(),
-//                   *icol_a.initial_axis(),
-//                   icol_a.initial_angle(),
-//                   *icol_a.axis_of_rotation(),
-//                   (float)(((int)time_ % 2 == 1) * 2 - 1) * *icol_a.velocity(),
-//                   icol_a.angular_velocity());
-//  return;
-//  /////////////
-//  
-//  float inertia_a = momentOfInertia(*icol_a.axis_of_rotation(), obj_a);
-//  float inertia_b = momentOfInertia(*icol_b.axis_of_rotation(), obj_b);
-//
-//  glm::vec3 velocity_a;
-//  velocityAtPoint(icol_a, velocity_a);
-//  glm::vec3 velocity_b;
-//  velocityAtPoint(icol_b, velocity_b);
-//
-//  glm::vec3 rpoint_a;
-//  relativePoint(icol_a, rpoint_a);
-//  glm::vec3 rpoint_b;
-//  relativePoint(icol_b, rpoint_b);
-//
-//  glm::vec3 normal;
-//  normalToEdge(normal);
-//
-//  glm::vec3 impact_velocity = velocity_a - velocity_b;
-//  float impulse_param = impulseParam(ELASTICITY,
-//                                     impact_velocity,
-//                                     normal,
-//                                     (*objects_)[obj_a]->mass(),
-//                                     (*objects_)[obj_b]->mass(),
-//                                     rpoint_a,
-//                                     rpoint_b,
-//                                     inertia_a,
-//                                     inertia_b);
-//}
-
-void Collision::normalToEdge(glm::vec3 & normal) const {
-  // TODO stuff
+void Collision::normalToEdge(glm::vec3 const & relative_point,
+                             float dtime,
+                             int object_id,
+                             CollisionEvent const & collision,
+                             glm::vec3 & normal) const {
+  glm::vec3 canonical_point = glm::rotate(
+                                glm::rotate(relative_point,
+                                            collision.initial_angle(),
+                                            *collision.initial_axis()
+                                ),
+                                dtime * collision.angular_velocity(),
+                                *collision.axis_of_rotation()
+                              );
+  object(object_id)->normalToEdge(canonical_point, normal);
 }
 
-void Collision::coordinatesAtTime(float time, CollisionEvent const & collision, glm::vec3 & coordinates) const {
-  float dtime = time - collision.time();
+void Collision::coordinatesAtTime(float dtime,
+                                  CollisionEvent const & collision,
+                                  glm::vec3 & coordinates) const {
   coordinates = *collision.initial_coordinates() + dtime * *collision.velocity();
 }
   
-void Collision::velocityAtPoint(float time, glm::vec3 const & point, CollisionEvent const & collision, glm::vec3 & velocity) const {
+void Collision::velocityAtPoint(float dtime,
+                                glm::vec3 const & point,
+                                CollisionEvent const & collision,
+                                glm::vec3 & velocity) const {
   glm::vec3 radius;
-  radiusAtPoint(time, point, collision, radius);
+  radiusAtPoint(dtime, point, collision, radius);
 
   velocity = *collision.velocity() + collision.angular_velocity() * glm::cross(*collision.axis_of_rotation(), radius);
 }
 
-void Collision::radiusAtPoint(float time, glm::vec3 const & point, CollisionEvent const & collision, glm::vec3 & radius) const {
+void Collision::radiusAtPoint(float dtime,
+                              glm::vec3 const & point,
+                              CollisionEvent const & collision,
+                              glm::vec3 & radius) const {
   glm::vec3 coordinates;
-  coordinatesAtTime(time, collision, coordinates);
+  coordinatesAtTime(dtime, collision, coordinates);
   radius = point - coordinates;
 }
 

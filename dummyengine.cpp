@@ -29,12 +29,12 @@ DummyEngine::DummyEngine(MotionEngine & motionengine,
 
   for (int i = 0; i < objects.size(); i++) {
     event_queue_.push(CollisionEvent(i,                       // object id
-                                     1.0,                          // time
-                                     glm::vec3(0.0f, 0.0f, 0.0f),  // initial_coordinates
+                                     0.0,                          // time
+                                     glm::vec3((i - 0.5) * 4.0f, 0.0f, 0.0f),  // initial_coordinates
                                      glm::vec3(0.0f, 0.0f, 1.0f),  // initial_axis
                                      0.0f,                         // initial_angle
                                      glm::vec3(1.0f, 0.0f, 0.0f),  // axis_of_rotation
-                                     glm::vec3(3.0f + i * (-3.0f), i * 3.0f, 0.0f),  // velocity
+                                     glm::vec3(-4.0f * (i - 0.5), 0.0f, 0.0f),  // velocity
                                      0.0f));                       // angular_velocity
   }
 }
@@ -42,9 +42,17 @@ DummyEngine::DummyEngine(MotionEngine & motionengine,
 void DummyEngine::randomEvent(int object_id) {
   int i = object_id;
   Collision collision = Collision(*objects_);
-  CollisionEvent newcol;
-  collision.generateCollisionEvents(last_events_[i].time() + 1, glm::vec3(0.0f, 0.0f, 0.0f), i, i, last_events_[i], last_events_[i], newcol, newcol);
-  event_queue_.push(newcol);
+  CollisionEvent newcol_a, newcol_b;
+  collision.generateCollisionEvents(last_events_[i].time() + .7,
+                                    glm::vec3(0.0f, 0.0f, 0.0f),
+                                    0,
+                                    1,
+                                    last_events_[0],
+                                    last_events_[1],
+                                    newcol_a,
+                                    newcol_b);
+  event_queue_.push(newcol_a);
+  event_queue_.push(newcol_b);
 }
 
 void DummyEngine::getState(int object_id, float time, State & state) {

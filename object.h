@@ -10,6 +10,7 @@ class Object {
     virtual int numtris() const = 0;
     virtual int mass() const = 0;
     virtual float inertia(glm::vec3 const & axis) const = 0;
+    virtual void normalToEdge(glm::vec3 const & point, glm::vec3 & normal) const = 0;
 };
 
 #endif
