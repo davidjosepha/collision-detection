@@ -1,3 +1,4 @@
+#include "motionengine.h"
 #include <cstdlib>
 #include <cstdio>
 #include <cmath>
@@ -9,7 +10,6 @@
 #endif
 #include <glm/gtx/transform.hpp>
 #include "collisionevent.h"
-#include "motionengine.h"
 
 MotionEngine::MotionEngine() { }
 
