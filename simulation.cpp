@@ -4,6 +4,7 @@
 #include "viewer.h"
 #include "object.h"
 #include "cuboid.h"
+#include "dummyengine.h"
 #include "motionengine.h"
 #include "collisionevent.h"
 
@@ -17,7 +18,6 @@ Simulation::Simulation() {
   objects.push_back(&s_cube); // i = 0
   objects.push_back(&l_cube); // i = 1
 
-  std::vector<CollisionEvent> events = std::vector<CollisionEvent>();
   CollisionEvent s_event = CollisionEvent(0,                            // object id
                                           0.0,                          // time
                                           glm::vec3(-1.0f, -1.0f, 0.0f),// initial_coordinates
@@ -26,9 +26,8 @@ Simulation::Simulation() {
                                           glm::vec3(0.0f, 1.0f, 0.0f),  // axis_of_rotation
                                           glm::vec3(1.0f, 1.0f, 0.0f),  // velocity
                                           1.0f);                        // angular_velocity
-  events.push_back(s_event);
 
-  CollisionEvent l_event = CollisionEvent(0,                            // object id
+  CollisionEvent l_event = CollisionEvent(1,                            // object id
                                           0.0,                          // time
                                           glm::vec3(-1.0f, 1.0f, 0.0f), // initial_coordinates
                                           glm::vec3(0.0f, 1.0f, 1.0f),  // initial_axis
@@ -36,11 +35,11 @@ Simulation::Simulation() {
                                           glm::vec3(1.0f, 0.0f, 1.0f),  // axis_of_rotation
                                           glm::vec3(1.0f, -1.0f, 0.0f), // velocity
                                           1.0f);                        // angular_velocity
-  events.push_back(l_event);
 
-  motionengine = MotionEngine();
-
-  dummyengine = DummyEngine(motionengine, events, objects);
+  //std::vector<CollisionEvent> events = std::vector<CollisionEvent>();
+  dummyengine = DummyEngine(motionengine, objects);
+  //dummyengine.pushEvent(s_event);
+  //dummyengine.pushEvent(l_event);
 
   Viewer viewer = Viewer(dummyengine);
   viewer.initGlut(0, NULL);

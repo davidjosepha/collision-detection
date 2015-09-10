@@ -8,6 +8,9 @@ class Object {
     virtual const glm::highp_uvec3 * tris() const = 0;
     virtual int numverts() const = 0;
     virtual int numtris() const = 0;
+    virtual int mass() const = 0;
+    virtual float inertia(glm::vec3 const & axis) const = 0;
+    virtual void normalToEdge(glm::vec3 const & point, glm::vec3 & normal) const = 0;
 };
 
 #endif
